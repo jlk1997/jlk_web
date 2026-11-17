@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import { yisuanFaqItems } from "@jlk/core/data/ask";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/faq" : "/en/faq";
+const items = yisuanFaqItems();
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="FAQPage"
+  dateModified="2026-10-22"
+  title={zh ? "蚁算常见问题" : "Yisuan questions"}
+  description={zh ? "公司、电商小程序和定制的短答案。具体价格不写在网上，聊完给书面报价。" : "Short answers on the company, the ecommerce mini program, and custom work. Prices are not on the site."}
+  faq={items.map((item) => ({ q: item.question[locale], a: item.answer[locale] }))}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "问答" : "Questions", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">FAQ</p>
+    <h1>{zh ? "先看这些。" : "Start here."}</h1>
+    <input class="faq-search" data-faq-filter type="search" placeholder={zh ? "搜问题" : "Search"} aria-label={zh ? "筛选" : "Filter"} />
+  </section>
+  <section class="band" style="padding-top:0">
+    {
+      items.map((item) => (
+        <article class="card" id={item.slug} data-q={`${item.question.zh} ${item.question.en}`}>
+          <h2><a href={localizeHref(`/faq/${item.slug}`, locale)}>{item.question[locale]}</a></h2>
+          <p class="muted">{item.answer[locale]}</p>
+        </article>
+      ))
+    }
+    <p>
+      <a href={`${SITES.me.origin}${zh ? "" : "/en"}/ask`}>{zh ? "更多问法在江李铠的问答页" : "More questions on Jiang Likai’s ask page"}</a>
+    </p>
+  </section>
+</Base>

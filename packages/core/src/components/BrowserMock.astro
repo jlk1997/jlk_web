@@ -1,0 +1,19 @@
+---
+interface Props {
+  caption: string;
+  label: string;
+}
+
+const { caption, label } = Astro.props;
+---
+
+<figure class="browser">
+  <div class="browser-chrome">
+    <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="browser-url">{label}</span>
+  </div>
+  <div class="browser-screen">
+    <slot />
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>

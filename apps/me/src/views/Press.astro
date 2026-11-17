@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import { pressBios, titles, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/press" : "/en/press";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠媒体包" : "Jiang Likai press kit"}
+  description={pressBios.short[locale]}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "媒体" : "Press", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "媒体" : "Press"}</p>
+      <h1>{locale === "zh" ? "请用这些句子。" : "Please use these sentences."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={titles.standard[locale]}
+      />
+      <article class="card" style="margin-bottom:1rem">
+        <p class="eyebrow">{locale === "zh" ? "短" : "Short"}</p>
+        <p>{pressBios.short[locale]}</p>
+      </article>
+      <article class="card" style="margin-bottom:1rem">
+        <p class="eyebrow">{locale === "zh" ? "中" : "Medium"}</p>
+        <p>{pressBios.medium[locale]}</p>
+      </article>
+      <article class="card" style="margin-bottom:1rem">
+        <p class="eyebrow">{locale === "zh" ? "长" : "Long"}</p>
+        <p>{pressBios.long[locale]}</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">{locale === "zh" ? "头衔" : "Titles"}</p>
+        <p>{titles.standard[locale]}</p>
+        <p class="muted">{titles.speaker[locale]}</p>
+        <p class="muted" style="margin-top:1rem">
+          {locale === "zh" ? "照片在关于页。没有对外 Logo，请勿用别人的图。" : "Photos are on the about page. There is no public logo. Do not use someone else’s image."}
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>

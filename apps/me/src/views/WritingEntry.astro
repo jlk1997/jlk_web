@@ -1,0 +1,45 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+import { getCollection, render } from "astro:content";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+const { locale, slug } = Astro.props;
+const post = (await getCollection("writing")).find((p) => p.data.article === slug && p.data.locale === locale);
+if (!post) throw new Error(`Missing writing ${slug} ${locale}`);
+const { Content } = await render(post);
+const path = locale === "zh" ? `/writing/${slug}` : `/en/writing/${slug}`;
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="Article"
+  title={`${post.data.title}｜${locale === "zh" ? "江李铠" : "Jiang Likai"}`}
+  description={post.data.description}
+  datePublished={post.data.datePublished}
+  dateModified={post.data.dateModified}
+  article={{ headline: post.data.title }}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "文章" : "Writing", path: locale === "zh" ? "/writing" : "/en/writing" },
+    { name: post.data.title, path },
+  ]}
+>
+  <article class="section">
+    <div class="narrow">
+      <p class="eyebrow">{post.data.datePublished} · {locale === "zh" ? "江李铠" : "Jiang Likai"}</p>
+      <h1>{post.data.title}</h1>
+      <AnswerBlock locale={locale} answer={post.data.description} />
+      <div class="prose">
+        <Content />
+      </div>
+      <p style="margin-top:2rem"><a href={localizeHref("/writing", locale)}>{locale === "zh" ? "全部文章" : "All essays"}</a></p>
+    </div>
+  </article>
+</Base>

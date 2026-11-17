@@ -1,0 +1,53 @@
+---
+import "@jlk/core/fonts.css";
+import "@jlk/core/tokens.css";
+import Seo from "@jlk/core/seo/Seo.astro";
+import SiteHeader from "@jlk/core/components/SiteHeader.astro";
+import SiteFooter from "@jlk/core/components/SiteFooter.astro";
+import { meFooterNav, meNav } from "@jlk/core/data/nav";
+import { person, type Locale } from "@jlk/core/data/facts";
+import type { JsonLdPage } from "@jlk/core/seo/jsonld";
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  locale: Locale;
+  path: string;
+  title: string;
+  description: string;
+  type?: JsonLdPage["type"];
+  datePublished?: string;
+  dateModified?: string;
+  breadcrumbs?: JsonLdPage["breadcrumbs"];
+  faq?: JsonLdPage["faq"];
+  article?: JsonLdPage["article"];
+  noindex?: boolean;
+}
+
+const { locale, path, title, description, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo site="me" locale={locale} path={path} title={title} description={description} {...seo} />
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+  <body>
+    <SiteHeader
+      locale={locale}
+      brand={person.name[locale]}
+      brandHref="/"
+      items={meNav}
+      path={path}
+      ctaHref="/collaborate"
+      ctaLabel={locale === "zh" ? "谈合作" : "Work with me"}
+    />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter locale={locale} site="me" items={meFooterNav} />
+  </body>
+</html>

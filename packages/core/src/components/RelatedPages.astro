@@ -1,0 +1,31 @@
+---
+import { clusterTitle, type RelatedLink } from "../data/clusters";
+import { localizeHref } from "../data/nav";
+import type { Locale } from "../data/facts";
+
+interface Props {
+  locale: Locale;
+  links: RelatedLink[];
+}
+
+const { locale, links } = Astro.props;
+---
+
+<nav class="related" aria-label={clusterTitle(locale)}>
+  <p class="eyebrow">{clusterTitle(locale)}</p>
+  <div class="grid-3" style="margin-top:0.9rem">
+    {
+      links.map((link) => (
+        <a
+          class="card"
+          href={link.external ? link.href : localizeHref(link.href, locale)}
+          rel={link.external ? "noopener" : undefined}
+          style="text-decoration:none"
+        >
+          <h2 style="font-size:1.15rem">{link.label[locale]}</h2>
+          <p class="muted">{link.note[locale]}</p>
+        </a>
+      ))
+    }
+  </div>
+</nav>

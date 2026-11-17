@@ -1,0 +1,66 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import { meClusters } from "@jlk/core/data/clusters";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/geo" : "/en/geo";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠｜GEO 生成引擎优化，让 AI 提到你" : "Likai Jiang | GEO, generative engine optimization"}
+  dateModified="2026-09-18"
+  description={locale === "zh"
+    ? "江李铠通过蚁算做 GEO：别人问 AI 的时候，名字、店、产品被说对。不保证一定被提到。小源AI 不做这件事。"
+    : "Likai Jiang does GEO through Yisuan: when someone asks an AI, the name, the shop, and the product come out right. A mention is not guaranteed. Xiaoyuan does not do this."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: "GEO", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow prose">
+      <p class="eyebrow">GEO</p>
+      <h1>{locale === "zh" ? "问 AI 的时候，提没提到你。" : "When people ask AI, are you named?"}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "GEO 是生成引擎优化：让答案里有你，且说得对。不保证一定被提到。"
+          : "GEO is generative engine optimization: being present and correctly described in answers. Mentions are not guaranteed."}
+      />
+      {
+        locale === "zh" ? (
+          <>
+            <p>人现在会问 ChatGPT、豆包、Kimi、文心、Perplexity，而不只是翻十个蓝色链接。你的公司、你的号、你的店，如果在答案里缺席，或者被说成别人，这就是 GEO 要处理的事。</p>
+            <p>我能答应的不多。把人和公司写清楚，链接打得开，常见问题写成完整答案，然后真去问一遍。没测过就写没测。链接打不开，就不算。</p>
+            <p>Google 说过，AI 概览不吃特殊标记，搜索也不看 llms.txt。所以我不卖「给 AI 看的魔法标签」。有用的是页面打得开、事情写得清。</p>
+            <p>这件事是蚁算接的服务，不是小源。小源是聊天分身。要谈 GEO，走 <a href={`${SITES.yisuan.origin}/geo`}>蚁算的 GEO 页</a>。</p>
+          </>
+        ) : (
+          <>
+            <p>People ask ChatGPT, Doubao, Kimi, Ernie, Perplexity — not only ten blue links. If your company, account, or shop is missing from the answer, or described as someone else, that is a GEO problem.</p>
+            <p>The promise is narrow. Write the entity clearly, keep public links alive, write self-contained answers, then actually ask the models. Untested stays untested. A broken link does not count.</p>
+            <p>Google said in 2026 that AI Overviews need no special Schema and that Search ignores llms.txt. I do not sell magic markup. What helps is a matching entity, a crawlable page, and a fact you can check.</p>
+            <p>This is a Yisuan service, not Xiaoyuan. Xiaoyuan is a chat stand-in. GEO lives on <a href={`${SITES.yisuan.origin}/geo`}>Yisuan’s GEO page</a>.</p>
+          </>
+        )
+      }
+      <CtaRow
+        locale={locale}
+        primaryHref={`${SITES.yisuan.origin}/geo`}
+        primary={locale === "zh" ? "看蚁算 GEO" : "Yisuan GEO"}
+        secondaryHref="/contact"
+        secondary={locale === "zh" ? "加微信" : "WeChat"}
+      />
+      <RelatedPages locale={locale} links={meClusters.geo} />
+    </div>
+  </section>
+</Base>

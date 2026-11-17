@@ -1,0 +1,182 @@
+---
+import Base from "../layouts/Base.astro";
+import TeamList from "@jlk/core/components/TeamList.astro";
+import { cases, contact, deliverySteps, organizations, solutions, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/" : "/en";
+const shots = [
+  "/images/solutions/shanghai-fashion.webp",
+  "/images/solutions/shanghai-coffee.webp",
+  "/images/solutions/beijing-tea.webp",
+  "/images/solutions/beijing-pet.webp",
+  "/images/solutions/guangzhou-beauty.webp",
+  "/images/solutions/guangzhou-furniture.webp",
+  "/images/solutions/shenzhen-digital.webp",
+  "/images/solutions/shenzhen-baby.webp",
+];
+const done = cases.map((item) => ({
+  href: item.href ?? "/cases",
+  name: item.name[locale],
+  note: item.note[locale],
+  image: item.image,
+}));
+const plans = solutions.map((item) => ({
+  href: `/solutions/${item.slug}`,
+  name: `${item.city[locale]} · ${item.industry[locale]}`,
+  note: item.title[locale],
+  image: item.image,
+}));
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "蚁算智能｜小程序商城，照你的生意来做" : "Yisuan | a mini-program shop, made for how you sell"}
+  description={organizations.yisuan.description[locale]}
+>
+  <section class="lens" data-lens>
+    <div class="collage lens-dim">
+      {shots.map((src) => <img src={src} alt="" />)}
+    </div>
+    <div class="lens-hole" data-hole>
+      <div class="collage lens-sharp" data-color>
+        {shots.map((src) => <img src={src} alt="" />)}
+      </div>
+    </div>
+    <div class="lens-copy">
+      <h1>{zh ? "小程序商城，照你的生意来做。" : "A mini-program shop, made for how you sell."}</h1>
+      <p class="lead">
+        {zh
+          ? <>现成系统按年用。品牌要独一份，就从头定制。店里还能放一个 <span class="keep">AI 导购</span>。</>
+          : "A ready system, paid by the year. If the brand wants its own, we design it from the start. An AI guide can sit in the shop."}
+      </p>
+    </div>
+    <p class="scroll-hint">{zh ? "向下滚动" : "Scroll"}</p>
+  </section>
+
+  <section class="stack" data-hot>
+    <p class="bracket">{zh ? "定制小程序电商" : "Mini programs, made to order"}</p>
+    <div class="stack-row" data-x="-8vw">{zh ? "我们做" : "We make"} <span class="chip"><img src="/images/solutions/shanghai-fashion.webp" alt="" /></span> {zh ? "小程序" : "mini programs"}</div>
+    <div class="stack-row bold" data-x="6vw">{zh ? "不套模板" : "No shared template"}</div>
+    <div class="stack-row lime" data-x="-4vw">{zh ? "从页面、后台" : "Screens, the desk,"}</div>
+    <div class="stack-row lime" data-x="5vw">{zh ? "到 AI 导购" : "and an AI guide"}</div>
+    <div class="stack-row" data-x="-6vw"><span class="chip"><img src="/images/ecommerce/scene-rug.webp" alt="" /></span> {zh ? "每家单独设计" : "Each one designed apart"}</div>
+    <div class="floater" data-float>
+      <img src="/images/solutions/guangzhou-furniture.webp" alt="" />
+    </div>
+  </section>
+
+  <section class="pin" data-pin>
+    <div class="pin-sticky">
+      <div class="pin-track" data-track>
+        <h2 class="pin-title">{zh ? "三种做法" : "Three ways"}</h2>
+        <a class="pin-card" href={localizeHref("/ecommerce", locale)}>
+          <em>01</em>
+          <h2>{zh ? "小程序电商" : "A ready shop"}</h2>
+          <p>{zh ? "现成的商城系统，开通就能卖。服务器、维护、升级归我们，按年付。" : "A ready shop. Open it and sell. The server, upkeep, and upgrades stay with us, paid by the year."}</p>
+          <p class="pin-note">{zh ? "SaaS，就是现成的系统，按年租着用。" : "SaaS: a ready system, rented by the year."}</p>
+        </a>
+        <a class="pin-card" href={localizeHref("/ai-commerce", locale)}>
+          <em>02</em>
+          <h2>{zh ? "AI 智能体电商" : "An AI guide"}</h2>
+          <p>{zh ? "店里放一个 AI 导购，按你的商品资料回答，帮客人挑货、下单。答不上来的转人工。" : "An AI guide answers from your product notes, helps a customer choose, and can place an order. What it cannot answer goes to a person."}</p>
+        </a>
+        <a class="pin-card" href={localizeHref("/custom", locale)}>
+          <em>03</em>
+          <h2>{zh ? "高端定制小程序" : "Custom"}</h2>
+          <p>{zh ? "品牌要独一份的，从界面到功能单独设计、单独开发。代码和数据归你。" : "When a brand wants its own, the screens and the functions are designed and built apart. The code and the data are yours."}</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack" data-hot>
+    <p class="bracket">{zh ? "先问你的店" : "First, your shop"}</p>
+    <div class="stack-row" data-x="7vw">{zh ? "你卖什么" : "What you sell"}</div>
+    <div class="stack-row bold" data-x="-9vw"><span class="chip"><img src="/images/solutions/beijing-tea.webp" alt="" /></span> {zh ? "卖给谁" : "Who buys it"}</div>
+    <div class="stack-row lime" data-x="-5vw">{zh ? "客人怎么下单" : "How they order"}</div>
+  </section>
+
+  <section class="center-type">
+    <div class="drift" data-drift><img src="/images/solutions/guangzhou-beauty.webp" alt="" /></div>
+    <div class="drift" data-drift><img src="/images/ecommerce/scene-toy.webp" alt="" /></div>
+    <div class="drift" data-drift><img src="/images/solutions/shenzhen-baby.webp" alt="" /></div>
+    <h2>
+      {zh ? "电商小程序" : "The mini program"}
+      <span>{zh ? "按你的卖法做" : "made for how you sell"}</span>
+      {zh ? "页面、下单、导购" : "Screens, checkout, the guide"}
+      <span>{zh ? "都在这一套里" : "in one place"}</span>
+    </h2>
+  </section>
+
+  <section class="band" data-hot>
+    <p class="bracket">{zh ? "做过的店" : "Shops we made"}</p>
+    <h2>{zh ? "能公开的，写在这里。" : "What can be said in public is here."}</h2>
+    <ul class="names">
+      {
+        done.map((item) => (
+          <li>
+            <a href={localizeHref(item.href, locale)} data-name data-img={item.image}>
+              {item.name}
+              <em>{item.note}</em>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="bracket group-label">{zh ? "行业方案，不是客户" : "Sample plans, not clients"}</p>
+    <ul class="names">
+      {
+        plans.map((item) => (
+          <li>
+            <a href={localizeHref(item.href, locale)} data-name data-img={item.image}>
+              {item.name}
+              <em>{item.note}</em>
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={localizeHref("/cases", locale)}>
+          {zh ? "看全部" : "See all"}
+          <em>{zh ? "案例" : "Works"}</em>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="band" style="padding-top:0" data-hot>
+    <p class="bracket">{zh ? "从聊需求到上线" : "From the talk to launch"}</p>
+    <div class="steps">
+      {
+        deliverySteps.map((step, index) => (
+          <article>
+            <b>0{index + 1}</b>
+            <h3>{step.title[locale]}</h3>
+            <p class="muted">{step.owner[locale]}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0" data-hot>
+    <p class="bracket">{zh ? "做你这家店的人" : "The people on your shop"}</p>
+    <TeamList locale={locale} mode="cards" />
+    <p style="margin-top:1.2rem"><a href={localizeHref("/team", locale)}>{zh ? "团队介绍" : "The team"}</a></p>
+  </section>
+
+  <p class="end">
+    {zh ? "有想法，加微信聊。" : "If there is a job, say it on WeChat."}
+    <br />
+    <a href={contact.telephoneHref}>{contact.wechat}</a>
+  </p>
+</Base>

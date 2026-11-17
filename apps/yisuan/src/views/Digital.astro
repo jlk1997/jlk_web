@@ -1,0 +1,84 @@
+---
+import Base from "../layouts/Base.astro";
+import Brief from "@jlk/core/components/Brief.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import ProcessSteps from "@jlk/core/components/ProcessSteps.astro";
+import { type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/services/digital-transformation" : "/en/services/digital-transformation";
+const zh = locale === "zh";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-15"
+  title={zh ? "智能体与应用交付｜蚁算智能" : "Agents and applications | Yisuan"}
+  description={zh
+    ? "给中小企业做智能体、小程序、App 和网站。从需求聊到上线，上线之后按年维护。项目按范围报价。"
+    : "Agents, mini programs, apps, and websites for smaller companies. From the brief through launch, then yearly upkeep. Quoted by scope."}
+  service={{
+    name: zh ? "智能体与应用交付" : "Agents and applications",
+    description: zh ? "给中小企业做能上线、有人维护的智能体、小程序、App 和网站。" : "Agents, mini programs, apps, and websites that ship and stay maintained.",
+  }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: zh ? "服务" : "Services", path },
+  ]}
+>
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">{zh ? "主营" : "The work"}</p>
+        <h1>{zh ? "从需求做到上线，之后继续维护。" : "From the brief to launch, then we stay on it."}</h1>
+        <p>
+          {zh
+            ? "智能体、小程序、App、网站。先把你们现在怎么干活画出来，再决定哪一步用模型。范围写清楚再开工。"
+            : "Agents, mini programs, apps, websites. We draw how the work runs now, then decide which step needs a model. The scope is written down before we start."}
+        </p>
+        <p>
+          {zh
+            ? "需求、产品和前端是江李铠。全站开发是李嘉树和王浩然。后端、上线和服务器安全是何前亮。市场是刘小斌。以前说的外包开发，就是这一条。"
+            : "Likai Jiang takes the brief, the product, and the front end. Li Jiashu and Wang Haoran build the whole site. Qianliang He takes backend, launch, and server security. Liu Xiaobin handles marketing. This is the work we used to call outsourcing."}
+        </p>
+        <ProcessSteps locale={locale} />
+        <h2>{zh ? "怎么收费" : "How it is priced"}</h2>
+        <p>
+          {zh
+            ? "项目按范围报价。上线之后的维护按年。两笔分开，不并成一个总数。"
+            : "The project is quoted by scope. Upkeep after launch is yearly. The two numbers stay separate."}
+        </p>
+        <p>
+          {zh ? (
+            <>只做电商小程序？看 <a href={localizeHref("/ecommerce", locale)}>蚁算电商</a>。</>
+          ) : (
+            <>Just an ecommerce mini program? See <a href={localizeHref("/ecommerce", locale)}>Yisuan Ecommerce</a>.</>
+          )}
+        </p>
+        <CtaRow locale={locale} primaryHref="/contact" primary={zh ? "微信说一个场景" : "WeChat a scene"} />
+      </div>
+      <Brief
+        items={[
+          {
+            label: zh ? "适合" : "A fit",
+            text: zh ? "有一件具体的事要做成系统的公司。" : "A company with one concrete job to turn into a system.",
+          },
+          {
+            label: zh ? "不适合" : "Not a fit",
+            text: zh ? "还说不清做成什么样，就要先上一个大平台。" : "A big platform first, with no description of what done means.",
+          },
+          {
+            label: zh ? "维护" : "Upkeep",
+            text: zh ? "上线不是结束。改bug、跟进、小改动，按年。" : "Launch is not the end. Bugs, follow-up, and small changes, billed by the year.",
+          },
+        ]}
+      />
+    </div>
+  </section>
+</Base>

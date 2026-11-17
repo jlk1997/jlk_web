@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { now, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/now" : "/en/now";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠现在在做什么" : "What Jiang Likai is doing now"}
+  description={locale === "zh" ? `更新于 ${now.updated}。` : `Updated ${now.updated}.`}
+  dateModified={now.updated}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "现在" : "Now", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">Now</p>
+      <h1>{locale === "zh" ? "现在。" : "Now."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "在读博，做 AI 安全和音乐水印。蚁算给中小企业做交付。小源在线上，比特音在换模型。"
+          : "In the PhD, on AI security and music watermarks. Yisuan delivers for smaller companies. Xiaoyuan is up. 比特音 is swapping its model."}
+        checked={locale === "zh" ? `本页日期 ${now.updated}` : `Dated ${now.updated}`}
+      />
+      <FactTable
+        locale={locale}
+        rows={[{ label: locale === "zh" ? "更新日期" : "Updated", value: now.updated }]}
+      />
+      <ol style="padding-left:1.1rem">
+        {now.items.map((item) => (
+          <li style="margin:0.8rem 0;color:var(--paper-dim)">{item[locale]}</li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>

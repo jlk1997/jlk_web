@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { organizations, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const org = organizations.weichong;
+const path = locale === "zh" ? "/ventures/weichong" : "/en/ventures/weichong";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "微宠时光｜江李铠" : "Weichong Time | Likai Jiang"}
+  description={org.description[locale]}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "创业" : "Ventures", path: locale === "zh" ? "/ventures" : "/en/ventures" },
+    { name: org.shortName[locale], path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "创业" : "Ventures"}</p>
+      <h1>{org.shortName[locale]}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "江李铠开的宠物数字化工作室。跟蚁算不是一家。"
+          : "Likai Jiang’s pet-digitalization studio. A separate company from Yisuan."}
+      />
+      <div class="prose">
+        <p>
+          {locale === "zh"
+            ? "宠物店、服务、内容、交易，这些都能做成软件。我做过能用的，也走过弯路。"
+            : "Shops, services, content, trade — all of that can become software. Some of it worked. Some was a detour."}
+        </p>
+      </div>
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "名称" : "Name", value: org.legalName },
+          { label: locale === "zh" ? "城市" : "City", value: org.city },
+          { label: locale === "zh" ? "成立" : "Founded", value: org.founded },
+        ]}
+      />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import { incubating, researchTracks, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/lab" : "/en/lab";
+const zh = locale === "zh";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-15"
+  title={zh ? "研究与孵化｜蚁算智能" : "Research and incubation | Yisuan"}
+  description={zh
+    ? "蚁算正在做两件事：音乐生成过程里的水印，以及边用边变的模型。另外五个项目还在孵化。"
+    : "Two open problems: watermarks written while music is generated, and a model that changes while it is used. Five other projects are still incubating."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: zh ? "研究" : "Research", path },
+  ]}
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">{zh ? "研究" : "Research"}</p>
+      <h1>{zh ? "还没做完的两件事。" : "Two things not finished."}</h1>
+      <p class="lead">
+        {zh
+          ? "水印跟创始人的博士方向是同一件事，也是比特音以后要靠的东西。另一件是模型能不能在使用中自己变好。"
+          : "The watermark is the founder’s PhD, and the thing 比特音 will need later. The other question is whether a model can get better while people use it."}
+      </p>
+      {
+        researchTracks.map((item) => (
+          <article class="card" style="margin-bottom:0.8rem">
+            <p class="eyebrow">{zh ? "研究中" : "Research"}</p>
+            <h2>{item.title[locale]}</h2>
+            <p class="muted">{item.body[locale]}</p>
+            {item.id === "watermark" && (
+              <p>
+                <a href={localizeHref("/music", locale)}>{zh ? "比特音" : "比特音"}</a>
+                {" · "}
+                <a href={`${SITES.me.origin}${localizeHref("/research", locale)}`}>{zh ? "江李铠的研究" : "Likai Jiang’s research"}</a>
+              </p>
+            )}
+          </article>
+        ))
+      }
+      <h2 style="margin-top:2.4rem">{zh ? "孵化中" : "Incubating"}</h2>
+      <p class="muted">{zh ? "名字先放在这里。功能不提前写。" : "Names only. Features stay unwritten until they exist."}</p>
+      <ul class="incubate">
+        {
+          incubating.map((item) => (
+            <li>
+              <b>{item.name[locale]}</b>
+              <span class="muted">{item.note[locale]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>

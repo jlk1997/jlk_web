@@ -1,0 +1,122 @@
+---
+import { SITES, type Locale } from "../data/facts";
+import { buildGraph, type JsonLdPage } from "./jsonld";
+
+interface Props {
+  site: "me" | "yisuan";
+  locale: Locale;
+  path: string;
+  title: string;
+  description: string;
+  type?: JsonLdPage["type"];
+  datePublished?: string;
+  dateModified?: string;
+  breadcrumbs?: JsonLdPage["breadcrumbs"];
+  faq?: JsonLdPage["faq"];
+  article?: JsonLdPage["article"];
+  service?: JsonLdPage["service"];
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  site,
+  locale,
+  path,
+  title,
+  description,
+  type,
+  datePublished,
+  dateModified,
+  breadcrumbs,
+  faq,
+  article,
+  service,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+const origin = site === "me" ? SITES.me.origin : SITES.yisuan.origin;
+const canonical = `${origin}${path === "/" ? "/" : path}`;
+const zhPath = path.startsWith("/en") ? path.replace(/^\/en/, "") || "/" : path;
+const enPath = zhPath === "/" ? "/en" : `/en${zhPath}`;
+const zhUrl = `${origin}${zhPath === "/" ? "/" : zhPath}`;
+const enUrl = `${origin}${enPath}`;
+const segments = zhPath.split("/").filter(Boolean);
+const ogSlug =
+  segments.length === 0
+    ? "home"
+    : segments[0] === "ventures" || segments[0] === "services"
+      ? segments.join("/")
+      : segments[0];
+const image = ogImage ?? `${origin}/og/${locale}/${ogSlug}.png`;
+const graph = buildGraph({
+  site,
+  locale,
+  path,
+  title,
+  description,
+  type,
+  datePublished,
+  dateModified,
+  breadcrumbs,
+  faq,
+  article,
+  service,
+});
+const siteName = site === "me" ? (locale === "zh" ? "江李铠" : "Likai Jiang") : locale === "zh" ? "蚁算智能" : "Yisuan";
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta
+  name="keywords"
+  content={
+    locale === "zh"
+      ? site === "me"
+        ? "江李铠,Likai Jiang,Jiang Likai,上海理工大学,MICS实验室,GEO,生成引擎优化,AI Agent,上海蚁算智能科技有限公司,小源AI,loveaibaby,genvidtrade"
+        : "蚁算智能,上海蚁算智能科技有限公司,小程序商城定制,电商小程序,AI导购小程序,小程序电商,蚁算电商,高端定制小程序,GEO优化,江李铠,何前亮,李嘉树,王浩然,刘小斌,genvidtrade"
+      : site === "me"
+        ? "Likai Jiang,Jiang Likai,USST,MICS Lab,GEO,generative engine optimization,AI agent,Yisuan,Xiaoyuan,Shanghai,genvidtrade"
+        : "Yisuan,Yisuan Ecommerce,WeChat mini program shop,custom mini program,AI shopping guide,GEO,Likai Jiang,Qianliang He,Shanghai,genvidtrade"
+  }
+/>
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={zhUrl} />
+<link rel="alternate" type="application/rss+xml" title={siteName} href={`${origin}/rss.xml`} />
+<link rel="me" href={site === "me" ? SITES.yisuan.origin : SITES.me.origin} />
+<link rel="me" href="mailto:1055207634@qq.com" />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1"} />
+<meta name="googlebot" content={noindex ? "noindex" : "index, follow, max-image-preview:large"} />
+<meta name="baiduspider" content={noindex ? "noindex" : "index, follow"} />
+<meta name="author" content="江李铠 / Likai Jiang" />
+<meta name="theme-color" content="#0c0d0b" />
+<meta name="applicable-device" content="pc,mobile" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="renderer" content="webkit" />
+<meta name="force-rendering" content="webkit" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="geo.region" content="CN-SH" />
+<meta name="geo.placename" content="Shanghai" />
+<meta name="geo.position" content="31.2304;121.4737" />
+<meta name="ICBM" content="31.2304, 121.4737" />
+<meta name="revised" content={dateModified ?? datePublished ?? "2026-09-18"} />
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={locale === "zh" ? "zh_CN" : "en_US"} />
+<meta property="og:locale:alternate" content={locale === "zh" ? "en_US" : "zh_CN"} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:alt" content={title} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/logo.svg" />
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />

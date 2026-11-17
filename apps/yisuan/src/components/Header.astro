@@ -1,0 +1,53 @@
+---
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref, yisuanNav } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const zh = locale === "zh";
+const home = zh ? "/" : "/en";
+const otherHref = zh ? (path === "/" ? "/en" : `/en${path}`) : path.replace(/^\/en/, "") || "/";
+
+function current(href: string) {
+  const localized = localizeHref(href, locale);
+  if (localized === "/" || localized === "/en") return path === localized;
+  return path === localized || path.startsWith(`${localized}/`);
+}
+---
+
+<a class="skip" href="#main">{zh ? "跳到正文" : "Skip to content"}</a>
+<header class="top" data-header>
+  <a class="logo" href={home}>
+    <b>蚁算</b>
+    <small>YISUAN</small>
+  </a>
+  <nav class="nav-desk" aria-label={zh ? "主导航" : "Main"}>
+    {
+      yisuanNav.map((item) => (
+        <a class:list={["flip", { on: current(item.href) }]} href={localizeHref(item.href, locale)}>
+          <span class="flip-inner">
+            <span>{zh ? item.label.zh : item.label.en}</span>
+            <span>{zh ? item.label.en : item.label.zh}</span>
+          </span>
+        </a>
+      ))
+    }
+    <button class="ghost" type="button" data-open-contact>{zh ? "联系" : "Contact"}</button>
+  </nav>
+  <div class="nav-tools">
+    <a class="lang" href={otherHref} hreflang={zh ? "en" : "zh-CN"}>{zh ? "EN" : "中文"}</a>
+    <button class="burger" type="button" data-burger aria-label={zh ? "菜单" : "Menu"}><i></i></button>
+  </div>
+</header>
+<div class="menu" data-menu>
+  {
+    yisuanNav.map((item) => (
+      <a href={localizeHref(item.href, locale)}>{item.label[locale]}</a>
+    ))
+  }
+  <button class="ghost" type="button" data-open-contact>{zh ? "联系" : "Contact"}</button>
+</div>

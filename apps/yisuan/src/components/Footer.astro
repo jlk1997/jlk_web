@@ -1,0 +1,52 @@
+---
+import { contact, icp, type Locale } from "@jlk/core/data/facts";
+import { localizeHref, yisuanFooterNav, yisuanNav } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const year = 2026;
+const main = [
+  ...yisuanNav,
+  { href: "/ecommerce", label: { zh: "小程序电商", en: "Shop" } },
+  { href: "/custom", label: { zh: "定制", en: "Custom" } },
+  { href: "/contact", label: { zh: "联系", en: "Contact" } },
+];
+const mainHrefs = new Set(main.map((item) => item.href));
+const rest = yisuanFooterNav.filter((item) => !mainHrefs.has(item.href));
+---
+
+<footer class="foot">
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>yisuan.genvidtrade.cn · <b>yisuan.genvidtrade.cn</b> · </span>
+      <span>yisuan.genvidtrade.cn · <b>yisuan.genvidtrade.cn</b> · </span>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <div>
+      <div>© {year} {zh ? "上海蚁算智能科技有限公司" : "Yisuan Intelligence"}</div>
+      <a href={icp.url} rel="noopener">{icp.number}</a>
+      <div>{zh ? "微信" : "WeChat"} {contact.wechat}</div>
+      <nav class="foot-main" aria-label={zh ? "主要页面" : "Main pages"}>
+        {
+          main.map((item) => (
+            <a href={localizeHref(item.href, locale)}>{item.label[locale]}</a>
+          ))
+        }
+      </nav>
+    </div>
+    <nav class="foot-links" aria-label={zh ? "页脚" : "Footer"}>
+      {
+        rest.map((item) => (
+          <a href={item.external ? item.href : localizeHref(item.href, locale)} rel={item.external ? "noopener" : undefined}>
+            {item.label[locale]}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,68 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { contact, socials, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/contact" : "/en/contact";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="ContactPage"
+  title={locale === "zh" ? "联系江李铠" : "Contact Likai Jiang"}
+  description={`${locale === "zh" ? "微信" : "WeChat"} ${contact.wechat} · ${contact.telephone} · ${contact.email ?? ""}`}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "联系" : "Contact", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "联系" : "Contact"}</p>
+      <h1>{locale === "zh" ? "直接说你是谁。" : "Say who you are."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={`${locale === "zh" ? "微信" : "WeChat"} ${contact.wechat}，${contact.telephone}，${contact.email ?? ""}。`}
+      />
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "微信" : "WeChat", value: contact.wechat },
+          { label: locale === "zh" ? "电话" : "Phone", value: contact.telephone },
+          { label: locale === "zh" ? "邮箱" : "Email", value: contact.email },
+          { label: locale === "zh" ? "城市" : "City", value: contact.city },
+        ]}
+      />
+      {contact.emailHref && (
+        <p>
+          <a href={contact.emailHref}>{contact.email}</a>
+        </p>
+      )}
+      <p id="wechat" class="card">
+        {locale === "zh"
+          ? `请加微信 ${contact.wechat}，备注来意：企业 / 伙伴 / 资本。`
+          : `Add WeChat ${contact.wechat} and say whether you are a client, partner, or investor.`}
+      </p>
+      {
+        socials.filter((s) => s.url).length > 0 && (
+          <>
+            <h2>{locale === "zh" ? "其它" : "Also"}</h2>
+            <ul>
+              {socials.filter((s) => s.url).map((s) => (
+                <li>
+                  {s.label[locale]}：<a href={s.url}>{s.url}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+  </section>
+</Base>

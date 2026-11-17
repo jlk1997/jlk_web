@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import Lineup from "@jlk/core/components/Lineup.astro";
+import { contact, organizations, person, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/investors" : "/en/investors";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠 · 投资" : "Jiang Likai · capital"}
+  description={locale === "zh" ? "想认真聊投资。一页纸如下。" : "A real conversation about investment. One-pager below."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "资本" : "Capital", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "资本" : "Capital"}</p>
+      <h1>{locale === "zh" ? "想谈投资，先看这页。" : "If you want to talk investment, start here."}</h1>
+      <p class="lead">
+        {locale === "zh"
+          ? "财务数字不写在这页。已上线和还没上线的，分开写。"
+          : "Financials are not on this page. What is live and what is not are written separately."}
+      </p>
+      <article id="one-pager">
+        <p class="muted">{person.description[locale]}</p>
+        <FactTable
+          locale={locale}
+          rows={[
+            { label: locale === "zh" ? "公司" : "Company", value: organizations.yisuan.legalName },
+            { label: locale === "zh" ? "成立" : "Founded", value: organizations.yisuan.founded },
+            { label: locale === "zh" ? "创始人" : "Founder", value: person.name },
+          ]}
+        />
+        <div style="margin-top:1.5rem">
+          <Lineup locale={locale} host="me" />
+        </div>
+        <p class="muted">
+          {locale === "zh"
+            ? "钱如果进来，先把给中小企业的交付做稳，再把已经在线上的产品接着做。水印和会进化的模型是研究，不写成已经卖出去的东西。"
+            : "If capital comes in, it goes first to keeping delivery steady, then to the products already up. The watermark and the model that changes are research, not something already sold."}
+        </p>
+      </article>
+      <p style="margin-top:1.2rem">
+        <a class="btn" href={locale === "zh" ? "/investors#one-pager" : "/en/investors#one-pager"}>
+          {locale === "zh" ? "打印 / 另存此页" : "Print / save this page"}
+        </a>
+      </p>
+      <CtaRow
+        locale={locale}
+        primaryHref="/contact"
+        primary={`${locale === "zh" ? "微信" : "WeChat"} ${contact.wechat}`}
+        secondaryHref={contact.telephoneHref}
+        secondary={contact.telephone}
+      />
+    </div>
+  </section>
+</Base>

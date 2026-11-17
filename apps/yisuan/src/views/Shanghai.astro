@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { contact, organizations, person, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const org = organizations.yisuan;
+const path = zh ? "/shanghai" : "/en/shanghai";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "上海蚁算智能科技｜小程序电商" : "Yisuan in Shanghai | mini-program shops"}
+  description={zh
+    ? "上海蚁算智能科技有限公司在上海。做小程序商城、AI 导购和定制小程序。创始人江李铠。"
+    : "Yisuan is a Shanghai company. Mini-program shops, an AI guide, and custom mini programs. Founder: Likai Jiang."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "上海" : "Shanghai", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "上海" : "Shanghai"}</p>
+    <h1>{zh ? "公司在上海。" : "The company is in Shanghai."}</h1>
+    <p class="lead">{zh ? "公司在上海，创始人江李铠也在上海。执照地址是松江的集中登记地。小程序商城按年做，定制按项目报。" : "The company is in Shanghai, and so is the founder. The registered address is a shared Songjiang address. A ready shop is yearly. Custom work is a project."}</p>
+    <FactTable
+      locale={locale}
+      rows={[
+        { label: zh ? "城市" : "City", value: org.city },
+        { label: zh ? "创始人" : "Founder", value: person.name },
+        { label: zh ? "注册地址" : "Address", value: org.registeredAddress },
+        { label: zh ? "电话" : "Phone", value: contact.telephone },
+      ]}
+    />
+    <p style="margin-top:1rem">
+      <a href={localizeHref("/ecommerce", locale)}>{zh ? "看小程序电商" : "The shop"}</a>
+      {" · "}
+      <a href={`${SITES.me.origin}/shanghai`}>{zh ? "创始人的上海页" : "The founder’s Shanghai page"}</a>
+    </p>
+  </section>
+</Base>

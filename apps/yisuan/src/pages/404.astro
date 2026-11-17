@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+
+const locale = Astro.currentLocale === "en" ? "en" : "zh";
+---
+
+<Base
+  locale={locale}
+  path={locale === "en" ? "/en/404" : "/404"}
+  title="404"
+  description={locale === "zh" ? "没有这一页。" : "This page is not here."}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">404</p>
+      <h1>{locale === "zh" ? "没有这一页。" : "This page is not here."}</h1>
+      <a class="btn btn-solid" href={locale === "en" ? "/en" : "/"}>{locale === "zh" ? "回首页" : "Home"}</a>
+    </div>
+  </section>
+</Base>

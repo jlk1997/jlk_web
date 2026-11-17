@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/ai-commerce" : "/en/ai-commerce";
+const can = zh
+  ? ["回答商品问题：材质、尺寸、用法、库存。", "按预算和用途，从在售商品里挑。", "把两件放在一起比。", "查订单和快递。", "把选中的放进购物车。"]
+  : ["Answer product questions: material, size, use, stock.", "Pick from what you sell, by budget and use.", "Put two products side by side.", "Look up an order and a delivery.", "Put the chosen one in the cart."];
+const cannot = zh
+  ? ["自己改价、发券、退款。", "说你没卖的东西有货。", "资料里没有的，它编一个答案。"]
+  : ["Change a price, issue a coupon, or refund.", "Claim you sell something you do not.", "Invent an answer the notes do not contain."];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "AI 导购｜店里一个不下班的店员" : "AI guide | a shop assistant that stays"}
+  description={zh
+    ? "在微信小程序店里放一个 AI 导购。它只按你后台的商品和规则回答，帮客人挑货、下单。答不上来转人工。改价和退款要你点头。"
+    : "An AI guide in a WeChat mini-program shop. It answers only from your products and rules, helps a customer choose, and can place an order. What it cannot answer goes to a person."}
+  service={{
+    name: zh ? "AI 智能体电商" : "AI guide",
+    description: zh ? "小程序店里的 AI 导购，按商家资料回答并协助下单。" : "An AI guide in a mini-program shop. It answers from the merchant’s notes and can help place an order.",
+  }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "服务" : "Services", path: zh ? "/services" : "/en/services" },
+    { name: zh ? "AI 导购" : "AI guide", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "AI 智能体电商" : "AI guide"}</p>
+    <h1>{zh ? "店里一个不下班的导购。" : "A guide in the shop that does not clock out."}</h1>
+    <p class="lead">{zh ? "客人半夜问尺码、问库存、问哪一件更合适，它按你写进后台的资料回答。资料里没有的，它说要问店家，再转给你的客服。" : "A customer asks about size, stock, or which one fits. It answers from the notes in your desk. If the notes do not say, it says it will ask the shop, then hands the chat over."}</p>
+  </section>
+  <section class="band split" style="padding-top:0" data-hot>
+    <div class="grid-2">
+      <article class="card">
+        <h2>{zh ? "它会做" : "It will"}</h2>
+        <ul class="list">{can.map((item) => <li>{item}</li>)}</ul>
+      </article>
+      <article class="card">
+        <h2>{zh ? "它不做" : "It will not"}</h2>
+        <ul class="list">{cannot.map((item) => <li>{item}</li>)}</ul>
+      </article>
+    </div>
+    <div>
+      <div class="phone">
+        <div class="chat">
+          <div class="bubble user">{zh ? "有没有适合送礼的，预算别太高。" : "Something for a gift, not too expensive."}</div>
+          <div class="bubble ai">{zh ? "这两款在售，都适合送礼。左边的更轻，方便带走。" : "These two are on sale, and both work as gifts. The one on the left is lighter to carry."}</div>
+          <div class="bubble ai">{zh ? "要我放进购物车吗？" : "Should I put it in the cart?"}</div>
+        </div>
+      </div>
+      <p class="caption">{zh ? "示意图。回答以你的商品资料为准。" : "A sketch. Answers follow your product notes."}</p>
+      <p style="margin-top:1rem"><a href={localizeHref("/ecommerce", locale)}>{zh ? "先看商城本身" : "The shop itself"}</a></p>
+    </div>
+  </section>
+</Base>

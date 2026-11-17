@@ -1,0 +1,36 @@
+---
+import { team, type Locale } from "../data/facts";
+
+interface Props {
+  locale: Locale;
+  mode?: "strip" | "full" | "cards";
+}
+
+const { locale, mode = "strip" } = Astro.props;
+const cards = mode === "cards";
+---
+
+<div class={cards ? "team-cards" : mode === "full" ? "team-full" : "member-strip"}>
+  {
+    team.map((member) => (
+      <article class="member">
+        <figure class:list={["portrait", member.illustrated && "portrait-plain"]}>
+          <img
+            src={member.image}
+            alt={member.name[locale]}
+            width="768"
+            height="960"
+          />
+          {member.illustrated && <figcaption class="portrait-note">{locale === "zh" ? "示意头像" : "Illustration"}</figcaption>}
+        </figure>
+        <div>
+          <h3 style="margin-bottom:0">{member.name[locale]}</h3>
+          <p class="member-role">{member.role[locale]}</p>
+          {(cards || mode === "strip" ? member.paragraphs.slice(0, 1) : member.paragraphs).map((paragraph) => (
+            <p class="muted">{paragraph[locale]}</p>
+          ))}
+        </div>
+      </article>
+    ))
+  }
+</div>

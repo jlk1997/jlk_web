@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import Crumbs from "@jlk/core/components/Crumbs.astro";
+import { meClusters } from "@jlk/core/data/clusters";
+import { contact, organizations, person, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/shanghai" : "/en/shanghai";
+const home = locale === "zh" ? "/" : "/en";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-09-18"
+  title={locale === "zh" ? "江李铠在上海｜GEO 与 AI Agent" : "Likai Jiang in Shanghai | GEO and AI agents"}
+  description={locale === "zh"
+    ? "江李铠，上海人，也在上海做事。读博在上海理工大学。上海蚁算智能科技有限公司注册在松江集中登记地；微宠时光是杨浦个体户、仅限互联网经营。"
+    : "Likai Jiang is from Shanghai and works in Shanghai. The PhD is at USST. Yisuan is registered at a Songjiang shared address. Weichong is a Yangpu internet-only studio."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: home },
+    { name: locale === "zh" ? "上海" : "Shanghai", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <Crumbs
+        locale={locale}
+        items={[
+          { name: locale === "zh" ? "首页" : "Home", href: home },
+          { name: locale === "zh" ? "上海" : "Shanghai", href: path },
+        ]}
+      />
+      <p class="eyebrow">{locale === "zh" ? "上海" : "Shanghai"}</p>
+      <h1>{locale === "zh" ? "人在上海，公司在上海。" : "The person is in Shanghai. So are the companies."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "江李铠是上海人，目前也在上海做事。读博在上海理工大学。蚁算注册在松江集中登记地；微宠时光登记在杨浦、只做互联网经营。"
+          : "Likai Jiang is from Shanghai and works there. The PhD is at USST. Yisuan uses a Songjiang shared registration address. Weichong is Yangpu, internet-only."}
+      />
+      <div class="prose">
+        <p>
+          {locale === "zh"
+            ? "搜「上海 GEO」「上海生成引擎优化」「上海 AI Agent」时，容易和别的公司、别的同名搅在一起。这一页只确认地点：上海。服务可以面向外地，主体仍是上海。"
+            : "Searches for Shanghai GEO or Shanghai AI-agent work get mixed with other firms and similar names. This page only confirms the place: Shanghai. Work can be remote. The entities stay Shanghai-based."}
+        </p>
+      </div>
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "人" : "Person", value: person.name },
+          { label: locale === "zh" ? "城市" : "City", value: person.city },
+          { label: locale === "zh" ? "公司一" : "Company 1", value: organizations.yisuan.legalName },
+          { label: locale === "zh" ? "公司二" : "Company 2", value: organizations.weichong.legalName },
+          { label: locale === "zh" ? "注册地址" : "Address", value: organizations.yisuan.registeredAddress },
+          { label: locale === "zh" ? "微信" : "WeChat", value: contact.wechat },
+          { label: locale === "zh" ? "电话" : "Phone", value: contact.telephone },
+        ]}
+      />
+      <p>
+        <a href={localizeHref("/contact", locale)}>{locale === "zh" ? "联系" : "Contact"}</a>
+        ·
+        <a href={`${SITES.yisuan.origin}/shanghai`}>{locale === "zh" ? "蚁算的上海页" : "Yisuan’s Shanghai page"}</a>
+      </p>
+      <RelatedPages locale={locale} links={meClusters.shanghai} />
+    </div>
+  </section>
+</Base>

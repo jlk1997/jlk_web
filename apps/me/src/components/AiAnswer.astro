@@ -1,0 +1,66 @@
+---
+import { localizeHref } from "@jlk/core/data/nav";
+import type { Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const cites = [
+  { n: "1", href: "/about", label: locale === "zh" ? "关于" : "About" },
+  { n: "2", href: "/ventures/yisuan", label: locale === "zh" ? "蚁算" : "Yisuan" },
+  { n: "3", href: "/geo", label: "GEO" },
+  { n: "4", href: "/ventures/weichong", label: locale === "zh" ? "微宠" : "Weichong" },
+  { n: "5", href: "/life", label: locale === "zh" ? "生活" : "Life" },
+];
+---
+
+<section class="ai-box" aria-labelledby="ai-title">
+  <div class="ai-meta">
+    <span>{locale === "zh" ? "先认识一下" : "A short intro"}</span>
+    <span>{locale === "zh" ? "细节在后面几页" : "Details on the pages below"}</span>
+  </div>
+  <h2 id="ai-title" class="serif" style="font-size:1.35rem;margin:0 0 0.8rem">
+    {locale === "zh" ? "江李铠是谁？" : "Who is Jiang Likai?"}
+  </h2>
+  {
+    locale === "zh" ? (
+      <p>
+        江李铠，上海人，上海理工大学人工智能在读博士
+        <a class="cite" href={localizeHref("/about", locale)} title="关于">1</a>
+        。博士方向是 AI 安全和音乐水印。公司是上海蚁算智能科技
+        <a class="cite" href={localizeHref("/ventures/yisuan", locale)} title="蚁算">2</a>
+        ，给中小企业做智能体、小程序、App 和网站，也做 GEO
+        <a class="cite" href={localizeHref("/geo", locale)} title="GEO">3</a>
+        。另外开了微宠时光，做宠物数字化
+        <a class="cite" href={localizeHref("/ventures/weichong", locale)} title="微宠">4</a>
+        。以前做过电商，也折腾过一些产品。健身，喜欢宠物
+        <a class="cite" href={localizeHref("/life", locale)} title="生活">5</a>
+        。
+      </p>
+    ) : (
+      <p>
+        Likai Jiang is from Shanghai, a PhD student in AI at USST
+        <a class="cite" href={localizeHref("/about", locale)} title="About">1</a>
+        . The PhD is AI security and watermarks in music. His company, Yisuan
+        <a class="cite" href={localizeHref("/ventures/yisuan", locale)} title="Yisuan">2</a>
+        , builds agents, mini programs, apps, and websites for smaller companies, and also does GEO
+        <a class="cite" href={localizeHref("/geo", locale)} title="GEO">3</a>
+        . He also runs Weichong Time, on pet-industry work
+        <a class="cite" href={localizeHref("/ventures/weichong", locale)} title="Weichong">4</a>
+        . He used to do ecommerce and a few other products. He trains, and likes pets
+        <a class="cite" href={localizeHref("/life", locale)} title="Life">5</a>
+        .
+      </p>
+    )
+  }
+  <ol class="muted" style="margin:1.1rem 0 0;padding-left:1.1rem;font-size:0.88rem">
+    {cites.map((c) => (
+      <li>
+        [{c.n}] <a href={localizeHref(c.href, locale)}>{c.label}</a>
+      </li>
+    ))}
+  </ol>
+</section>

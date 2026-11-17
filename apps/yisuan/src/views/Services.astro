@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import { localizeHref } from "@jlk/core/data/nav";
+import type { Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/services" : "/en/services";
+const lines = [
+  {
+    no: "01",
+    href: "/ecommerce",
+    name: zh ? "小程序电商" : "A ready shop",
+    note: zh ? "现成的商城，开通就能卖。服务器和维护归我们，按年付。" : "A ready shop. Open it and sell. Server and upkeep stay with us, paid by the year.",
+  },
+  {
+    no: "02",
+    href: "/ai-commerce",
+    name: zh ? "AI 智能体电商" : "An AI guide",
+    note: zh ? "店里一个导购，按你的商品资料回答。答不上来的转人工。" : "A guide in the shop. It answers from your product notes. What it cannot answer goes to a person.",
+  },
+  {
+    no: "03",
+    href: "/custom",
+    name: zh ? "高端定制小程序" : "Custom",
+    note: zh ? "界面和功能单独设计、单独开发。代码和数据归你。" : "Screens and functions, designed and built apart. The code and the data are yours.",
+  },
+];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "服务｜蚁算智能" : "Services | Yisuan"}
+  description={zh
+    ? "蚁算做三件事：按年用的小程序商城，店里的 AI 导购，以及单独设计的小程序。报价聊完再写。"
+    : "Three lines: a mini-program shop by the year, an AI guide in the shop, and a mini program designed for one brand. The quote comes after we talk."}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "服务" : "Services"}</p>
+    <h1>{zh ? "三种做法。" : "Three ways."}</h1>
+    <p class="lead">{zh ? "先看你卖什么。能用现成系统就按年开。要独一份，就单独做。" : "We start from what you sell. A ready system opens by the year. If you want your own, we build it apart."}</p>
+  </section>
+  <section class="band" style="padding-top:0" data-hot>
+    {
+      lines.map((line) => (
+        <a class="line-link" href={localizeHref(line.href, locale)}>
+          <em>{line.no}</em>
+          <b>{line.name}</b>
+          <span>{line.note}</span>
+        </a>
+      ))
+    }
+  </section>
+</Base>

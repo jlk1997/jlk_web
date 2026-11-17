@@ -1,0 +1,90 @@
+---
+import { localizeHref } from "@jlk/core/data/nav";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = {
+  person: locale === "zh" ? "江李铠" : "Likai Jiang",
+  lab: locale === "zh" ? "上理 MICS" : "USST MICS",
+  yisuan: locale === "zh" ? "蚁算智能" : "Yisuan",
+  weichong: locale === "zh" ? "微宠时光" : "Weichong",
+  xiaoyuan: locale === "zh" ? "小源AI" : "Xiaoyuan",
+  geo: "GEO",
+  agent: "AI Agent",
+  digital: locale === "zh" ? "数字化" : "Digital",
+  out: locale === "zh" ? "AI 应用" : "AI apps",
+  pet: locale === "zh" ? "宠物数字化" : "Pet tech",
+  founder: locale === "zh" ? "创始人" : "founder",
+  product: locale === "zh" ? "产品" : "product",
+  title: locale === "zh" ? "人和事" : "People and work",
+  hint: locale === "zh" ? "学校、公司、产品，点进去看。" : "School, companies, product — click through.",
+};
+---
+
+<section class="graph-wrap" aria-labelledby="graph-title">
+  <div style="display:flex;justify-content:space-between;gap:1rem;padding:0.4rem 0.6rem 0.8rem">
+    <div>
+      <p class="eyebrow" id="graph-title">{L.title}</p>
+      <p class="muted" style="margin:0.35rem 0 0;font-size:0.88rem">{L.hint}</p>
+    </div>
+  </div>
+  <svg viewBox="0 0 820 420" role="img" aria-label={L.title}>
+    <title>{L.title}</title>
+    <desc>{L.hint}</desc>
+    <g stroke="rgba(243,238,228,0.22)" stroke-width="1.2" fill="none">
+      <line x1="410" y1="80" x2="180" y2="190"></line>
+      <line x1="410" y1="80" x2="640" y2="190"></line>
+      <line x1="410" y1="80" x2="120" y2="80"></line>
+      <line x1="180" y1="190" x2="180" y2="320"></line>
+      <line x1="640" y1="190" x2="520" y2="320"></line>
+      <line x1="640" y1="190" x2="760" y2="320"></line>
+      <line x1="410" y1="80" x2="410" y2="210"></line>
+      <line x1="410" y1="210" x2="300" y2="320"></line>
+      <line x1="410" y1="210" x2="410" y2="320"></line>
+    </g>
+    <a class="graph-node" href={localizeHref("/research", locale)} aria-label={L.lab}>
+      <rect class="node-fill" x="40" y="54" width="160" height="48" rx="24" fill="#1d1e1a" stroke="rgba(243,238,228,0.28)"></rect>
+      <text x="120" y="84" text-anchor="middle" font-size="14" fill="#f3eee4">{L.lab}</text>
+    </a>
+    <a class="graph-node" href={localizeHref("/about", locale)} aria-label={L.person}>
+      <rect class="node-fill" x="330" y="42" width="160" height="52" rx="26" fill="#f3eee4"></rect>
+      <text x="410" y="74" text-anchor="middle" font-size="16" fill="#0c0d0b">{L.person}</text>
+    </a>
+    <a class="graph-node" href={SITES.yisuan.origin} aria-label={L.yisuan}>
+      <rect class="node-fill" x="560" y="164" width="160" height="48" rx="24" fill="#1d1e1a" stroke="#e8a317"></rect>
+      <text x="640" y="194" text-anchor="middle" font-size="15" fill="#f3eee4">{L.yisuan}</text>
+    </a>
+    <a class="graph-node" href={localizeHref("/ventures/weichong", locale)} aria-label={L.weichong}>
+      <rect class="node-fill" x="100" y="164" width="160" height="48" rx="24" fill="#1d1e1a" stroke="rgba(243,238,228,0.28)"></rect>
+      <text x="180" y="194" text-anchor="middle" font-size="15" fill="#f3eee4">{L.weichong}</text>
+    </a>
+    <a class="graph-node" href={SITES.xiaoyuan.origin} aria-label={L.xiaoyuan}>
+      <rect class="node-fill" x="330" y="186" width="160" height="48" rx="24" fill="#1d1e1a" stroke="#3d9a7a"></rect>
+      <text x="410" y="216" text-anchor="middle" font-size="15" fill="#f3eee4">{L.xiaoyuan}</text>
+    </a>
+    <a class="graph-node" href={localizeHref("/ventures/weichong", locale)} aria-label={L.pet}>
+      <rect class="node-fill" x="110" y="296" width="140" height="40" rx="20" fill="#161714"></rect>
+      <text x="180" y="322" text-anchor="middle" font-size="13" fill="#d9d3c6">{L.pet}</text>
+    </a>
+    <a class="graph-node" href={localizeHref("/geo", locale)} aria-label={L.geo}>
+      <rect class="node-fill" x="240" y="296" width="120" height="40" rx="20" fill="#161714"></rect>
+      <text x="300" y="322" text-anchor="middle" font-size="13" fill="#d9d3c6">{L.geo}</text>
+    </a>
+    <a class="graph-node" href={localizeHref("/ai-agent", locale)} aria-label={L.agent}>
+      <rect class="node-fill" x="350" y="296" width="120" height="40" rx="20" fill="#161714"></rect>
+      <text x="410" y="322" text-anchor="middle" font-size="13" fill="#d9d3c6">{L.agent}</text>
+    </a>
+    <a class="graph-node" href={`${SITES.yisuan.origin}/services/outsourcing`} aria-label={L.out}>
+      <rect class="node-fill" x="460" y="296" width="120" height="40" rx="20" fill="#161714"></rect>
+      <text x="520" y="322" text-anchor="middle" font-size="13" fill="#d9d3c6">{L.out}</text>
+    </a>
+    <a class="graph-node" href={`${SITES.yisuan.origin}/services/digital-transformation`} aria-label={L.digital}>
+      <rect class="node-fill" x="690" y="296" width="140" height="40" rx="20" fill="#161714"></rect>
+      <text x="760" y="322" text-anchor="middle" font-size="13" fill="#d9d3c6">{L.digital}</text>
+    </a>
+  </svg>
+</section>

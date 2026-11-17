@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { organizations, person, SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/not-xiaoyi" : "/en/not-xiaoyi";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "蚁算智能不是小蚁科技" : "Yisuan is not Xiaoyi"}
+  description={zh
+    ? "上海蚁算智能科技有限公司不是小蚁科技，也不是奕算智能。创始人是江李铠。主业是小程序电商、AI 导购和定制小程序。"
+    : "Yisuan is not Xiaoyi. Founder: Likai Jiang. The work is mini-program shops, an AI guide, and custom mini programs."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "同名" : "Same name", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "同名" : "Same name"}</p>
+    <h1>{zh ? "我们是蚁算，不是小蚁。" : "This is Yisuan, not Xiaoyi."}</h1>
+    <p class="lead">{zh ? "我们是上海蚁算智能科技有限公司。做小程序商城、店里的 AI 导购，以及单独设计的小程序。创始人是江李铠。" : "This is Shanghai Yisuan Intelligence. Mini-program shops, an AI guide in the shop, and mini programs designed apart. Founder: Likai Jiang."}</p>
+    <FactTable
+      locale={locale}
+      rows={[
+        { label: zh ? "是" : "This is", value: organizations.yisuan.legalName },
+        { label: zh ? "创始人" : "Founder", value: person.name },
+        { label: zh ? "官网" : "Site", value: SITES.yisuan.origin },
+        { label: zh ? "不是" : "Not", value: zh ? "小蚁科技、奕算智能、其它同音主体" : "Xiaoyi, similarly named chip firms, or other look-alikes" },
+      ]}
+    />
+    <p style="margin-top:1rem"><a href={`${SITES.me.origin}/not-xiaoyi`}>{zh ? "创始人侧同一说明" : "The founder-side page"}</a></p>
+  </section>
+</Base>

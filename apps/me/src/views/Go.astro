@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+import { getGo } from "@jlk/core/data/go";
+import type { Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+const { locale, slug } = Astro.props;
+const link = getGo(slug);
+if (!link) throw new Error(`Unknown go slug ${slug}`);
+const path = locale === "zh" ? `/go/${slug}` : `/en/go/${slug}`;
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={`${link.title[locale]}｜${locale === "zh" ? "跳转" : "Go"}`}
+  description={link.description[locale]}
+  noindex={true}
+>
+  <meta slot="head" http-equiv="refresh" content={`0;url=${link.href}`} />
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">go/{slug}</p>
+      <h1>{link.title[locale]}</h1>
+      <p class="lead">{link.description[locale]}</p>
+      <p>
+        <a class="btn btn-solid" href={link.href} rel={link.external ? "noopener" : undefined}>
+          {locale === "zh" ? "继续前往" : "Continue"}
+        </a>
+      </p>
+      <p class="muted">{link.href}</p>
+    </div>
+  </section>
+</Base>

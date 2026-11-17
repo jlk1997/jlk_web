@@ -1,0 +1,16 @@
+---
+interface Props {
+  caption: string;
+}
+
+const { caption } = Astro.props;
+---
+
+<figure class="phone">
+  <div class="phone-bezel">
+    <div class="phone-screen">
+      <slot />
+    </div>
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>

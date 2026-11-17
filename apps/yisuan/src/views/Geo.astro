@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import { yisuanClusters } from "@jlk/core/data/clusters";
+import { cases, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/geo" : "/en/geo";
+const geoCases = cases.filter((item) => item.name.zh === "江苏文旅" || item.name.zh === "义乌机器人玩具");
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "GEO 优化｜蚁算智能" : "GEO | Yisuan"}
+  description={zh
+    ? "别人问 AI 的时候，名字、店、产品被说对。做过江苏文旅和义乌的机器人玩具企业。不保证一定被提到。"
+    : "When someone asks an AI, the name, the shop, and the product come out right. Work includes Jiangsu Culture and Tourism and a Yiwu robot-toy company. A mention is not guaranteed."}
+  service={{
+    name: "GEO",
+    description: zh ? "让 AI 的回答里说对名字、店和产品。" : "Get the name, the shop, and the product right in AI answers.",
+  }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: "GEO", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">GEO</p>
+    <h1>{zh ? "问 AI 的时候，说对你。" : "When someone asks an AI, the answer is right."}</h1>
+    <p class="lead">{zh ? "别人用豆包、Kimi、ChatGPT 问到你的行业时，回答里有你，而且说的是对的。页面要打得开，事实要写得清。这一项是人来做的。不写保证一定被提到。" : "When someone asks Doubao, Kimi, or ChatGPT about your trade, the answer includes you, and it is accurate. Pages have to open. Facts have to be plain. People do this. A mention is not guaranteed."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <h2>{zh ? "做过" : "Done"}</h2>
+    <ul class="names">
+      {geoCases.map((item) => <li><a>{item.name[locale]} <em>{item.note[locale]}</em></a></li>)}
+    </ul>
+    <p class="muted" style="margin-top:1rem">{zh ? "自动的那套还在孵化，不在这一页卖。小源是另一件产品，做聊天分身，不做这件事。" : "An automated system is still incubating, and is not sold here. Xiaoyuan is a different product, a chat stand-in."}</p>
+    <p><a href={localizeHref("/contact", locale)}>{zh ? "加微信谈" : "WeChat"}</a></p>
+    <RelatedPages locale={locale} links={yisuanClusters.geo} />
+  </section>
+</Base>

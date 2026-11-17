@@ -1,0 +1,11 @@
+---
+import { askItems } from "@jlk/core/data/ask";
+import AskEntry from "../../views/AskEntry.astro";
+
+export function getStaticPaths() {
+  return askItems.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+<AskEntry locale="zh" slug={slug!} />

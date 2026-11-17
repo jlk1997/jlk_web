@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import { askBySlug, askCategories } from "@jlk/core/data/ask";
+import { SITES, type Locale, type Localized } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const item = askBySlug(slug);
+if (!item || !["company", "geo", "services"].includes(item.category)) {
+  throw new Error(`Not a Yisuan FAQ slug: ${slug}`);
+}
+const zh = locale === "zh";
+const path = zh ? `/faq/${slug}` : `/en/faq/${slug}`;
+
+const shop = new Set([
+  "what-is-yisuan-ecommerce",
+  "mini-program-shop-yearly-price",
+  "mini-program-shop-vs-custom",
+  "mini-program-ai-guide",
+  "shanghai-yearly-mini-program-shop",
+  "yisuan-pricing",
+]);
+
+const related: { href: string; label: Localized } = shop.has(slug)
+  ? { href: "/ecommerce", label: { zh: "看小程序电商", en: "The shop" } }
+  : slug === "yisuan-cases"
+    ? { href: "/cases", label: { zh: "案例", en: "Work" } }
+    : slug === "what-is-biteyin"
+      ? { href: "/music", label: { zh: "比特音", en: "比特音" } }
+      : slug === "what-is-yisuan-teacher"
+        ? { href: "/products/teacher", label: { zh: "蚁算老师", en: "Yisuan Teacher" } }
+        : slug === "what-is-yisuan-keyan"
+          ? { href: "/products/keyan", label: { zh: "蚁算科研", en: "Yisuan Research" } }
+          : item.category === "geo"
+            ? { href: "/geo", label: { zh: "GEO", en: "GEO" } }
+            : { href: "/contact", label: { zh: "加微信", en: "WeChat" } };
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="FAQPage"
+  dateModified="2026-10-22"
+  title={item.question[locale]}
+  description={item.answer[locale]}
+  faq={[{ q: item.question[locale], a: item.answer[locale] }]}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "问答" : "Questions", path: zh ? "/faq" : "/en/faq" },
+    { name: item.question[locale], path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{askCategories[item.category][locale]}</p>
+    <h1>{item.question[locale]}</h1>
+    <p class="lead">{item.answer[locale]}</p>
+    <p style="margin-top:1.2rem">
+      <a href={localizeHref(related.href, locale)}>{related.label[locale]}</a>
+      {" · "}
+      <a href={localizeHref("/faq", locale)}>{zh ? "全部问答" : "All questions"}</a>
+      {" · "}
+      <a href={`${SITES.me.origin}${zh ? "" : "/en"}/ask/${slug}`}>{zh ? "创始人站的同一问法" : "The same question on the founder’s site"}</a>
+    </p>
+  </section>
+</Base>

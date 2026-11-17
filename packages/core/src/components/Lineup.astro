@@ -1,0 +1,53 @@
+---
+import { offeringGroups, offerings, SITES, type Locale, type OfferingGroup } from "../data/facts";
+import { localizeHref } from "../data/nav";
+
+interface Props {
+  locale: Locale;
+  host?: "yisuan" | "me";
+}
+
+const { locale, host = "yisuan" } = Astro.props;
+const groups: OfferingGroup[] = ["service", "product"];
+
+function hrefFor(href: string, external: boolean | undefined): string {
+  if (external || href.startsWith("http")) return href;
+  const local = localizeHref(href, locale);
+  if (host === "me") return `${SITES.yisuan.origin}${local}`;
+  return local;
+}
+---
+
+<div class="lineup" id="work">
+  {
+    groups.map((id) => (
+      <section id={id}>
+        <h2>{offeringGroups[id][locale]}</h2>
+        <div class="offer-list">
+          {offerings
+            .filter((item) => item.group === id)
+            .map((item) => (
+              <article class="offer">
+                <div class="offer-name">
+                  <h3>
+                    <a href={hrefFor(item.detailHref, false)}>{item.name[locale]}</a>
+                  </h3>
+                  <p class:list={["status", `status-${item.status}`]}>{item.statusLabel[locale]}</p>
+                </div>
+                <p class="offer-who">{item.host[locale]} · {item.audience[locale]}</p>
+                <p class="muted offer-sum">{item.summary[locale]}</p>
+                <a
+                  class:list={["btn", item.actionExternal && "btn-solid"]}
+                  href={hrefFor(item.actionHref, item.actionExternal)}
+                  target={item.actionExternal ? "_blank" : undefined}
+                  rel={item.actionExternal ? "noopener" : undefined}
+                >
+                  {item.actionLabel[locale]}
+                </a>
+              </article>
+            ))}
+        </div>
+      </section>
+    ))
+  }
+</div>

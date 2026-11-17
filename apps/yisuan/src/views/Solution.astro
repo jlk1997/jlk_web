@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import { solutionBySlug, solutionDisclaimer, solutionLines, solutions, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const item = solutionBySlug(slug);
+if (!item) throw new Error(`Unknown solution: ${slug}`);
+const zh = locale === "zh";
+const path = zh ? `/solutions/${slug}` : `/en/solutions/${slug}`;
+const others = solutions.filter((entry) => entry.slug !== slug).slice(0, 3);
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? `${item.city.zh}${item.industry.zh}小程序｜方案示例` : `${item.city.en} · ${item.industry.en} | sample plan`}
+  description={`${item.summary[locale]} ${solutionDisclaimer[locale]}`}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "案例" : "Works", path: zh ? "/cases" : "/en/cases" },
+    { name: `${item.city[locale]} · ${item.industry[locale]}`, path },
+  ]}
+>
+  <section class="intro split">
+    <div>
+      <p class="bracket">{solutionDisclaimer[locale]}</p>
+      <h1>{item.city[locale]} · {item.industry[locale]}</h1>
+      <p class="lead">{item.summary[locale]}</p>
+      <p class="muted" style="margin-top:0.8rem">{solutionLines[item.line][locale]} · {item.title[locale]}</p>
+    </div>
+    <figure>
+      <img src={item.image} alt="" />
+      <figcaption class="caption">{zh ? "示意图，不是某家客户的店。" : "A sketch, not a client’s shop."}</figcaption>
+    </figure>
+  </section>
+  <section class="band" style="padding-top:0">
+    <ul class="list">
+      {item.points.map((point) => <li>{point[locale]}</li>)}
+    </ul>
+    <p style="margin-top:1.4rem">
+      <a href={localizeHref("/contact", locale)}>{zh ? "这接近你的生意，加微信" : "Close to your business? WeChat"}</a>
+    </p>
+    <div class="work-grid" style="margin-top:2rem">
+      {
+        others.map((entry) => (
+          <a class="work-card" href={localizeHref(`/solutions/${entry.slug}`, locale)}>
+            <h3>{entry.city[locale]} · {entry.industry[locale]}</h3>
+            <figure><img src={entry.image} alt="" /></figure>
+            <small>{zh ? "方案示例" : "Sample plan"}</small>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>

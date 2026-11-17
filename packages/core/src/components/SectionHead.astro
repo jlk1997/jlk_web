@@ -1,0 +1,19 @@
+---
+interface Props {
+  no: string;
+  title: string;
+  lead?: string;
+  id?: string;
+}
+
+const { no, title, lead, id } = Astro.props;
+---
+
+<header class="chapter" id={id}>
+  <p class="chapter-kicker">
+    <span class="chapter-no">{no}</span>
+  </p>
+  <h2>{title}</h2>
+  <div class="chapter-rule"></div>
+  {lead && <p class="chapter-lead">{lead}</p>}
+</header>

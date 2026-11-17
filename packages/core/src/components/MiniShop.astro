@@ -1,0 +1,36 @@
+---
+interface Item {
+  img: string;
+  name: string;
+  price: string;
+}
+
+interface Props {
+  title: string;
+  banner: string;
+  items: Item[];
+}
+
+const { title, banner, items } = Astro.props;
+---
+
+<div class="mp" aria-hidden="true">
+  <div class="mp-top">
+    <b>{title}</b>
+    <span class="mp-pill"><i></i><i></i></span>
+  </div>
+  <img class="mp-banner" src={banner} alt="" />
+  <div class="mp-grid">
+    {
+      items.map((item) => (
+        <article>
+          <img src={item.img} alt="" />
+          <p>
+            {item.name}
+            <em>¥{item.price}</em>
+          </p>
+        </article>
+      ))
+    }
+  </div>
+</div>

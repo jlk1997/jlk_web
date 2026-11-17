@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import { meClusters } from "@jlk/core/data/clusters";
+import {
+  education,
+  lab,
+  papers,
+  person,
+  school,
+  SITES,
+  type Locale,
+} from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/research" : "/en/research";
+const faq = [
+  {
+    q: locale === "zh" ? "江李铠在哪所大学读博？" : "Where is Likai Jiang doing his PhD?",
+    a: locale === "zh" ? "上海理工大学，MICS 实验室。" : "USST, MICS Lab.",
+  },
+  {
+    q: locale === "zh" ? "江李铠有哪些论文？" : "What papers has Likai Jiang published?",
+    a: papers.map((p) => p.title[locale]).join("；"),
+  },
+];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-09-19"
+  type="CollectionPage"
+  title={locale === "zh" ? "江李铠的论文｜上海理工大学 MICS" : "Likai Jiang — papers | USST MICS"}
+  description={locale === "zh"
+    ? "江李铠在上海理工大学 MICS 实验室读博，方向是 AI 安全和音乐生成模型水印。已经刊出的论文是硕士阶段的图形学和实时渲染。"
+    : "Likai Jiang is a PhD student at the USST MICS Lab, on AI security and watermarks for music models. The published papers are master’s work in graphics and real-time rendering."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "论文" : "Research", path },
+  ]}
+  faq={faq}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "论文" : "Research"}</p>
+      <h1>{locale === "zh" ? "现在研究水印。刊出的是渲染。" : "Watermarks now. Rendering on the page."}</h1>
+      <div class="prose">
+        {
+          locale === "zh" ? (
+            <p>
+              我现在在上海理工大学 MICS 实验室读人工智能博士，做 AI 安全，以及音乐生成过程里的水印。实验室全称是多媒体智能计算与安全实验室，主页在{" "}
+              <a href={lab.url}>{lab.url.replace("https://", "")}</a>
+              。这件事还没有论文。下面几篇是硕士阶段刊出的，方向是图形学和实时渲染，署名单位是上海工程技术大学。水印和比特音的关系写在{" "}
+              <a href={`${SITES.yisuan.origin}/lab`}>蚁算的研究页</a>
+              。
+            </p>
+          ) : (
+            <p>
+              I am a PhD student in AI at the USST MICS Lab, on AI security and watermarks written while music is generated. Lab site:{" "}
+              <a href={lab.url}>{lab.url.replace("https://", "")}</a>
+              . That work has no paper yet. The papers below are from the master’s, on graphics and real-time rendering, signed at SUES. The link to 比特音 is on{" "}
+              <a href={`${SITES.yisuan.origin}/lab`}>Yisuan’s research page</a>
+              .
+            </p>
+          )
+        }
+      </div>
+
+      <h2>{locale === "zh" ? "学历" : "Education"}</h2>
+      {education.map((item) => (
+        <article class="card" style="margin-bottom:0.8rem">
+          <p class="eyebrow">{item.current ? (locale === "zh" ? "在读" : "Current") : (locale === "zh" ? "之前" : "Earlier")}</p>
+          <h3>{item.degree[locale]} · {item.school[locale]}</h3>
+          <p class="muted">{item.unit[locale]}</p>
+          <p class="muted">{item.field[locale]}</p>
+          {item.note && <p class="muted">{item.note[locale]}</p>}
+          <p><a href={item.schoolUrl}>{item.schoolUrl.replace("https://", "")}</a></p>
+        </article>
+      ))}
+
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "现在" : "Now", value: school.name },
+          { label: locale === "zh" ? "实验室" : "Lab", value: lab.name },
+          { label: locale === "zh" ? "方向" : "Field", value: person.researchField },
+          { label: locale === "zh" ? "论文署名" : "On papers", value: "Jiang Likai / Jiang LiKai" },
+        ]}
+      />
+
+      <h2>{locale === "zh" ? "论文" : "Papers"}</h2>
+      {papers.map((paper) => (
+        <article class="card" style="margin-bottom:0.9rem">
+          <p class="eyebrow">{paper.kind[locale]} · {paper.date}</p>
+          <h3><a href={paper.url}>{paper.title[locale]}</a></h3>
+          <p class="muted">{paper.authors}</p>
+          <p class="muted">{paper.venue[locale]}</p>
+          {paper.doi && <p class="muted">DOI {paper.doi}</p>}
+          <p class="muted">{paper.note[locale]}</p>
+        </article>
+      ))}
+
+      <RelatedPages locale={locale} links={meClusters.home} />
+    </div>
+  </section>
+</Base>

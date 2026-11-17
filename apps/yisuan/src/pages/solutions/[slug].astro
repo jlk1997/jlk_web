@@ -1,0 +1,11 @@
+---
+import { solutions } from "@jlk/core/data/facts";
+import Solution from "../../views/Solution.astro";
+
+export function getStaticPaths() {
+  return solutions.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+<Solution locale="zh" slug={slug!} />

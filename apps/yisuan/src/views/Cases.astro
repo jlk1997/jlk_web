@@ -1,0 +1,68 @@
+---
+import Base from "../layouts/Base.astro";
+import { cases, solutionDisclaimer, solutionLines, solutions, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/cases" : "/en/cases";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "案例｜做过的店，和行业方案" : "Work | shops we made, and sample plans"}
+  description={zh
+    ? "做过出海独立站、西藏的手工藏毯品牌、苏州的玩具工厂，以及江苏文旅和义乌机器人玩具的 GEO。北上广深的行业页是方案示例，不是客户名单。"
+    : "Export storefronts, a handmade-rug brand in Tibet, a toy factory in Suzhou, and GEO for Jiangsu Culture and Tourism and a Yiwu robot-toy company. The city plans are samples, not a client list."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "案例" : "Works", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "案例" : "Works"}</p>
+    <h1>{zh ? "做过的，和拿来对照的。" : "What we made, and what you can compare."}</h1>
+    <p class="lead">{zh ? "上面是真实做过的，客户没授权全称就不写全称。下面按城市和行业写的是方案示例，不是客户。" : "The first block is real work. If a client has not cleared the legal name, we do not print it. The city-and-trade block is sample plans, not clients."}</p>
+  </section>
+
+  <section class="band" id="done" style="padding-top:0">
+    <h2>{zh ? "做过的店" : "Shops we made"}</h2>
+    <ul class="names">
+      {
+        cases.map((item) => (
+          <li>
+            <a href={item.href ? localizeHref(item.href, locale) : localizeHref("/contact", locale)} data-name data-img={item.image}>
+              {item.name[locale]}
+              <em>{item.note[locale]}</em>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="band" id="plans" style="padding-top:0" data-hot>
+    <h2>{zh ? "行业方案" : "Sample plans"}</h2>
+    <p class="muted">{solutionDisclaimer[locale]}</p>
+    <div class="work-grid" style="margin-top:1.4rem">
+      {
+        solutions.map((item) => (
+          <a class="work-card" href={localizeHref(`/solutions/${item.slug}`, locale)}>
+            <h3>{item.city[locale]} · {item.industry[locale]}</h3>
+            <figure>
+              <img src={item.image} alt="" />
+              <div class="work-hover"><span>{item.title[locale]} · {item.title[locale]} · </span></div>
+            </figure>
+            <small>{solutionLines[item.line][locale]} · {zh ? "方案示例" : "Sample plan"}</small>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>

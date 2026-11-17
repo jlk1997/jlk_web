@@ -1,0 +1,54 @@
+---
+import { contact, icp, person, SITES, type Locale } from "../data/facts";
+import { localizeHref, type NavItem } from "../data/nav";
+
+interface Props {
+  locale: Locale;
+  site: "me" | "yisuan";
+  items: NavItem[];
+}
+
+const { locale, site, items } = Astro.props;
+const note =
+  site === "me"
+    ? locale === "zh"
+      ? "上海人。在读博士。公司是蚁算。"
+      : "From Shanghai. PhD student. Runs Yisuan."
+    : locale === "zh"
+      ? "给中小企业做智能体、小程序、App 和网站。上线之后接着维护。"
+      : "Agents, mini programs, apps, and websites for smaller companies, then upkeep.";
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="serif" style="font-size:1.4rem;color:var(--paper);margin:0 0 0.6rem">
+        {site === "me" ? person.name[locale] : locale === "zh" ? "蚁算智能" : "Yisuan"}
+      </p>
+      <p>{note}</p>
+      <p>
+        {locale === "zh" ? "微信" : "WeChat"} {contact.wechat}<br />
+        <a href={contact.telephoneHref}>{contact.telephone}</a>
+      </p>
+    </div>
+    <div>
+      <p class="eyebrow">{locale === "zh" ? "页面" : "Pages"}</p>
+      <p style="display:flex;flex-direction:column;gap:0.45rem;margin-top:0.8rem">
+        {items.slice(0, 10).map((item) => (
+          <a href={item.external ? item.href : localizeHref(item.href, locale)}>{item.label[locale]}</a>
+        ))}
+      </p>
+    </div>
+    <div>
+      <p class="eyebrow">{locale === "zh" ? "相关" : "Related"}</p>
+      <p style="display:flex;flex-direction:column;gap:0.45rem;margin-top:0.8rem">
+        <a href={SITES.me.origin}>{locale === "zh" ? "江李铠 · 个人" : "Jiang Likai"}</a>
+        <a href={SITES.yisuan.origin}>{locale === "zh" ? "上海蚁算智能科技" : "Yisuan Intelligence"}</a>
+        <a href={`${SITES.me.origin}/ventures/weichong`}>{locale === "zh" ? "微宠时光" : "Weichong Time"}</a>
+        <a href={SITES.xiaoyuan.origin}>小源AI / Sourced</a>
+        <a href={localizeHref("/llms.txt", "zh")}>llms.txt</a>
+        <a href={icp.url} rel="nofollow">{icp.number}</a>
+      </p>
+    </div>
+  </div>
+</footer>

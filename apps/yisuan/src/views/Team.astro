@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+import TeamList from "@jlk/core/components/TeamList.astro";
+import { partners, SITES, team, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/team" : "/en/team";
+const longer = team.filter((member) => !member.illustrated && member.paragraphs.length > 1);
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="AboutPage"
+  dateModified="2026-10-24"
+  title={zh ? "团队｜蚁算智能" : "Team | Yisuan"}
+  description={zh
+    ? "做你这家店的人：江李铠管需求和产品，李嘉树、王浩然做小程序和网站，何前亮管上线和服务器，刘小斌对接商家。"
+    : "The people on your shop. Likai Jiang takes the brief and the product. Li Jiashu and Wang Haoran build the mini program and the site. Qianliang He takes launch and the server. Liu Xiaobin talks with the shop."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "团队" : "Team", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "团队" : "Team"}</p>
+    <h1>{zh ? "做你这家店的人。" : "The people on your shop."}</h1>
+    <p class="lead">{zh ? "江李铠管需求和产品。李嘉树、王浩然做小程序和网站。何前亮管上线和服务器。刘小斌对接商家，把做法讲清楚。" : "Likai Jiang takes the brief and the product. Li Jiashu and Wang Haoran build the mini program and the site. Qianliang He takes launch and the server. Liu Xiaobin talks with the shop, in plain words."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <TeamList locale={locale} mode="cards" />
+    <div class="team-long">
+      {
+        longer.map((member) => (
+          <article>
+            <h2>{member.name[locale]}</h2>
+            {member.paragraphs.slice(1).map((paragraph) => (
+              <p class="muted">{paragraph[locale]}</p>
+            ))}
+          </article>
+        ))
+      }
+    </div>
+    <h2 style="margin-top:2.4rem">{zh ? "合作实验室" : "Partner labs"}</h2>
+    {
+      partners.map((item) => (
+        <p>
+          <b>{item.url ? <a href={item.url}>{item.name[locale]}</a> : item.name[locale]}</b>
+          <span class="muted"> — {item.note[locale]}</span>
+        </p>
+      ))
+    }
+    <p class="muted">
+      <a href={`${SITES.me.origin}${localizeHref("/research", locale)}`}>{zh ? "创始人的研究页" : "The founder’s research page"}</a>
+    </p>
+  </section>
+</Base>

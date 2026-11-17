@@ -1,0 +1,68 @@
+---
+import Base from "../layouts/Base.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import { yisuanClusters } from "@jlk/core/data/clusters";
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/pricing" : "/en/pricing";
+const rows = [
+  {
+    name: zh ? "现成商城" : "Ready shop",
+    body: zh ? "按年付。小程序、服务器和维护在里面。聊过你卖什么，给书面报价。" : "Paid by the year. The mini program, the server, and upkeep are in it. After we hear what you sell, you get a written quote.",
+    href: "/ecommerce",
+  },
+  {
+    name: zh ? "AI 导购" : "AI guide",
+    body: zh ? "加在小程序里。要不要加、怎么加，跟电商小程序一起谈。" : "Added in the mini program. Whether to add it is part of the same conversation.",
+    href: "/ai-commerce",
+  },
+  {
+    name: zh ? "定制小程序" : "Custom",
+    body: zh ? "按项目报。范围写清再给数字，不报一个看不懂的总包。" : "Quoted as a project. The scope is written, then the number. Not one opaque lump.",
+    href: "/custom",
+  },
+  {
+    name: zh ? "其它产品" : "Other products",
+    body: zh ? "小源的价格在它自己的网站上。比特音、蚁算老师、蚁算科研还没有对外价目。" : "Xiaoyuan’s price is on its own site. 比特音, Yisuan Teacher, and Yisuan Research have no public price.",
+    href: "/products",
+  },
+];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "怎么报价｜蚁算智能" : "Quotes | Yisuan"}
+  description={zh ? "现成商城按年付，定制按项目报。网上不写具体价格，聊完给书面报价。" : "A ready shop is paid by the year. A custom build is quoted as a project. The number is not on the site."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "报价" : "Quotes", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "报价" : "Quotes"}</p>
+    <h1>{zh ? "聊完再写数字。" : "The number comes after we talk."}</h1>
+    <p class="lead">{zh ? "现成的按年，单独做的按项目。两笔不并成一个看起来很大的数。" : "Ready work is yearly. Custom work is a project. They stay as two bills."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <div class="grid-2">
+      {
+        rows.map((row) => (
+          <a class="card" href={localizeHref(row.href, locale)}>
+            <h2>{row.name}</h2>
+            <p class="muted">{row.body}</p>
+          </a>
+        ))
+      }
+    </div>
+    <RelatedPages locale={locale} links={yisuanClusters.pricing} />
+  </section>
+</Base>

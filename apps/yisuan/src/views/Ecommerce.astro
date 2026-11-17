@@ -1,0 +1,96 @@
+---
+import Base from "../layouts/Base.astro";
+import RelatedPages from "@jlk/core/components/RelatedPages.astro";
+import { yisuanClusters } from "@jlk/core/data/clusters";
+import { ecommerceFaq, ecommerceIncludes, ecommerceOutside, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/ecommerce" : "/en/ecommerce";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "小程序电商｜现成的商城，按年用" : "Mini-program shop | a ready shop, by the year"}
+  description={zh
+    ? "微信小程序商城，开通就能卖。商品、购物车、微信支付、订单、商家后台、服务器和维护都在里面。货款进你自己的账户。具体价格聊完给书面报价。"
+    : "A WeChat mini-program shop you can open and sell from. Products, cart, WeChat Pay, orders, the desk, the server, and upkeep. Payments land in your account. The price is a written quote."}
+  faq={ecommerceFaq.map((item) => ({ q: item.q[locale], a: item.a[locale] }))}
+  service={{
+    name: zh ? "小程序电商" : "Mini-program shop",
+    description: zh ? "按年使用的微信小程序商城，含服务器和维护。" : "A WeChat mini-program shop paid by the year, with the server and upkeep.",
+  }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "服务" : "Services", path: zh ? "/services" : "/en/services" },
+    { name: zh ? "小程序电商" : "Shop", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "小程序电商" : "Mini-program shop"}</p>
+    <h1>{zh ? "现成的商城，开通就能卖。" : "A ready shop. Open it and sell."}</h1>
+    <p class="lead">{zh ? "小程序我们做，服务器我们出，上线后有问题我们修。你准备营业执照、商品图和售价。" : "We build the mini program, we run the server, and we fix it after launch. You bring the license, the photos, and the prices."}</p>
+  </section>
+
+  <section class="band split" style="padding-top:0" data-hot>
+    <div>
+      <h2>{zh ? "年费里有这些" : "In the yearly fee"}</h2>
+      <ul class="list">
+        {ecommerceIncludes.map((item) => <li>{item[locale]}</li>)}
+      </ul>
+      <h2 style="margin-top:2rem">{zh ? "不在里面" : "Not in it"}</h2>
+      <ul class="list">
+        {ecommerceOutside.map((item) => <li>{item[locale]}</li>)}
+      </ul>
+    </div>
+    <div>
+      <div class="phone">
+        <header>{zh ? "示例店" : "A sample shop"}</header>
+        <img class="banner" src="/images/ecommerce/scene-rug.webp" alt="" />
+        <div class="goods">
+          <figure><img src="/images/ecommerce/rug-geo.webp" alt="" /><figcaption>{zh ? "几何纹" : "Geometric"}</figcaption></figure>
+          <figure><img src="/images/ecommerce/rug-floral.webp" alt="" /><figcaption>{zh ? "缠枝" : "Floral"}</figcaption></figure>
+          <figure><img src="/images/solutions/beijing-tea.webp" alt="" /><figcaption>{zh ? "礼盒" : "Gift set"}</figcaption></figure>
+          <figure><img src="/images/ecommerce/plush.webp" alt="" /><figcaption>{zh ? "毛绒" : "Plush"}</figcaption></figure>
+        </div>
+      </div>
+      <p class="caption">{zh ? "示意图，不是客户真实页面。" : "A sketch, not a client’s real page."}</p>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <h2>{zh ? "和单独做的差别" : "Against a one-off build"}</h2>
+    <div class="grid-2" style="margin-top:1rem">
+      <article class="card">
+        <h3>{zh ? "按年用" : "By the year"}</h3>
+        <p class="muted">{zh ? "页面结构是现成的，商品、活动和文案换成你的。坏了在年费里修。适合先把店开起来。" : "The structure is ready. Products, campaigns, and copy become yours. Fixes stay in the yearly fee. A fit when you want the shop open."}</p>
+      </article>
+      <article class="card">
+        <h3>{zh ? "单独做" : "Built apart"}</h3>
+        <p class="muted">{zh ? "会员、预约、经销商分档、和仓库对接，这些现成系统装不下的，走定制。" : "Members, bookings, dealer price bands, a warehouse link: when the ready shop cannot hold it, that is the custom line."}</p>
+        <p><a href={localizeHref("/custom", locale)}>{zh ? "看定制" : "Custom"}</a></p>
+      </article>
+    </div>
+    <p style="margin-top:1.2rem"><a href={localizeHref("/ai-commerce", locale)}>{zh ? "店里要人答疑，看 AI 导购" : "If the shop should answer customers, see the AI guide"}</a></p>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <h2>{zh ? "常问的" : "Questions"}</h2>
+    {
+      ecommerceFaq.map((item) => (
+        <article class="card">
+          <h3>{item.q[locale]}</h3>
+          <p class="muted">{item.a[locale]}</p>
+        </article>
+      ))
+    }
+    <RelatedPages locale={locale} links={yisuanClusters.ecommerce} />
+  </section>
+</Base>

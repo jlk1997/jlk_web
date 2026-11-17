@@ -1,0 +1,81 @@
+---
+import Base from "../layouts/Base.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import Lineup from "@jlk/core/components/Lineup.astro";
+import { askItems } from "@jlk/core/data/ask";
+import { person, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/" : "/en";
+const title = locale === "zh"
+  ? "江李铠｜上海理工大学在读博士，蚁算智能"
+  : "Likai Jiang | PhD student at USST, Yisuan";
+const description = person.description[locale];
+const featured = ["who-is-jiang-likai", "jiang-likai-school", "what-is-yisuan", "how-to-contact-jiang-likai"]
+  .map((slug) => askItems.find((item) => item.slug === slug))
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
+const faq = featured.map((item) => ({ q: item.question[locale], a: item.answer[locale] }));
+---
+
+<Base locale={locale} path={path} title={title} description={description} type="ProfilePage" dateModified="2026-09-28" faq={faq}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">{locale === "zh" ? "上海 · 上理 MICS" : "Shanghai · USST MICS"}</p>
+        <h1>{person.headline[locale]}</h1>
+        <p class="lead">
+          {locale === "zh"
+            ? "上海理工大学人工智能在读博士，方向是 AI 安全和音乐生成模型水印。公司是蚁算，给中小企业做智能体、小程序、App 和网站。"
+            : "PhD student in AI at USST, on AI security and watermarks for music models. Yisuan builds agents, mini programs, apps, and websites for smaller companies."}
+        </p>
+        <CtaRow
+          locale={locale}
+          primaryHref="/collaborate"
+          primary={locale === "zh" ? "找我合作" : "Work with me"}
+          secondaryHref={SITES.yisuan.origin}
+          secondary={locale === "zh" ? "打开蚁算" : "Open Yisuan"}
+        />
+      </div>
+      <figure class="portrait hero-portrait">
+        <img src={person.image ?? ""} alt={locale === "zh" ? "江李铠" : "Likai Jiang"} width="799" height="1024" />
+        <figcaption>{locale === "zh" ? "江李铠 · Likai Jiang" : "Likai Jiang · 江李铠"}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <p class="prose">
+        {locale === "zh"
+          ? "论文在研究页。微宠时光是另一家，做宠物数字化。下面是蚁算现在的业务，点进去到公司站。"
+          : "Papers are on the research page. Weichong Time is a separate studio, on pet digitalization. The lines below open the company site."}
+      </p>
+      <Lineup locale={locale} host="me" />
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">{locale === "zh" ? "也可以先看" : "Or start here"}</p>
+      <div class="grid-3" style="margin-top:1rem">
+        <a class="card" href={localizeHref("/research", locale)} style="text-decoration:none">
+          <h3>{locale === "zh" ? "论文" : "Papers"}</h3>
+          <p class="muted">{locale === "zh" ? "上理 MICS。现在做安全和音乐水印。" : "USST MICS. Security and music watermarks now."}</p>
+        </a>
+        <a class="card" href={localizeHref("/investors", locale)} style="text-decoration:none">
+          <h3>{locale === "zh" ? "投资" : "Capital"}</h3>
+          <p class="muted">{locale === "zh" ? "一页纸。财务数字不写。" : "One page. No financials."}</p>
+        </a>
+        <a class="card" href={localizeHref("/contact", locale)} style="text-decoration:none">
+          <h3>{locale === "zh" ? "联系" : "Contact"}</h3>
+          <p class="muted">{locale === "zh" ? "微信 cjlk112233" : "WeChat cjlk112233"}</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

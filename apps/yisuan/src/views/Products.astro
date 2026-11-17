@@ -1,0 +1,45 @@
+---
+import Base from "../layouts/Base.astro";
+import { offerings, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/products" : "/en/products";
+const others = offerings.filter((item) => item.group === "product" || item.id === "geo");
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "其它产品｜蚁算智能" : "Other products | Yisuan"}
+  description={zh
+    ? "主业是小程序电商。另外还做 GEO、比特音、小源AI、蚁算老师和蚁算科研。能打开的写明地址，还不能用的写明原因。"
+    : "The main work is mini-program shops. Also GEO, 比特音, Xiaoyuan, Yisuan Teacher, and Yisuan Research. What you can open has an address. What you cannot use says why."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "其它产品" : "Other products", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "其它" : "Also"}</p>
+    <h1>{zh ? "主业旁边的几件。" : "Beside the main work."}</h1>
+    <p class="lead">{zh ? "电商小程序、导购、定制在服务页。这里是另外在做的。" : "The ecommerce mini program, the guide, and custom work are on the services page. These are the other things."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    {
+      others.map((item) => (
+        <a class="line-link" href={localizeHref(item.detailHref, locale)}>
+          <em>{item.statusLabel[locale]}</em>
+          <b>{item.name[locale]}</b>
+          <span>{item.summary[locale]}</span>
+        </a>
+      ))
+    }
+  </section>
+</Base>

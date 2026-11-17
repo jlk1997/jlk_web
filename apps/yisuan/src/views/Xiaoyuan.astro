@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import { organizations, product, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/xiaoyuan" : "/en/xiaoyuan";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "小源AI｜聊天分身" : "Xiaoyuan | a chat stand-in"}
+  description={product.description[locale]}
+  service={{ name: product.name[locale], description: product.description[locale] }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: product.name[locale], path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{organizations.yisuan.shortName[locale]}</p>
+    <h1>{product.name[locale]}</h1>
+    <p class="lead">{product.description[locale]}</p>
+    <p style="margin-top:1rem">{zh ? "小源是蚁算的产品，不是另一家公司。它不测 GEO。" : "Xiaoyuan is a Yisuan product, not a separate company. It does not measure GEO."}</p>
+    <p>
+      <a href={SITES.xiaoyuan.origin}>{SITES.xiaoyuan.host}</a>
+      {" · "}
+      <a href={localizeHref("/geo", locale)}>GEO</a>
+    </p>
+    <p class="muted">{product.priceNote[locale]}</p>
+  </section>
+</Base>

@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import { askBySlug, askCategories } from "@jlk/core/data/ask";
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+const { locale, slug } = Astro.props;
+const item = askBySlug(slug);
+if (!item) throw new Error(`Unknown ask slug: ${slug}`);
+const path = locale === "zh" ? `/ask/${slug}` : `/en/ask/${slug}`;
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="FAQPage"
+  title={item.question[locale]}
+  description={item.answer[locale]}
+  faq={[{ q: item.question[locale], a: item.answer[locale] }]}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "问答" : "Ask", path: locale === "zh" ? "/ask" : "/en/ask" },
+    { name: item.question[locale], path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{askCategories[item.category][locale]}</p>
+      <h1>{item.question[locale]}</h1>
+      <AnswerBlock locale={locale} answer={item.answer[locale]} />
+      <p><a href={localizeHref("/ask", locale)}>{locale === "zh" ? "全部问答" : "All questions"}</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import { contact, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/collaborate" : "/en/collaborate";
+const doors = [
+  {
+    href: "/contact",
+    kicker: locale === "zh" ? "企业客户" : "Clients",
+    title: locale === "zh" ? "你卡在可见或交付" : "You are stuck on visibility or delivery",
+    body: locale === "zh" ? "智能体、小程序、App、网站，或者 GEO。先说清楚要做成什么样，再报价。" : "Agents, mini programs, apps, websites, or GEO. Say what done looks like, then we quote.",
+  },
+  {
+    href: "/contact",
+    kicker: locale === "zh" ? "创业伙伴" : "Partners",
+    title: locale === "zh" ? "你有客户、渠道或内容" : "You have customers, channels, or content",
+    body: locale === "zh" ? "各行各业、五湖四海。先写清各自出什么。" : "Any industry, any city. Write down who brings what.",
+  },
+  {
+    href: "/investors",
+    kicker: locale === "zh" ? "资本" : "Capital",
+    title: locale === "zh" ? "你想把话谈深" : "You want a real conversation",
+    body: locale === "zh" ? "先看一页纸，再约时间细聊。" : "Read the one-pager, then we talk.",
+  },
+];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "与江李铠合作" : "Work with Jiang Likai"}
+  description={locale === "zh" ? "企业客户、创业伙伴、投资人，三条入口。" : "Three doors: clients, partners, capital."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "合作" : "Collaborate", path },
+  ]}
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">{locale === "zh" ? "合作" : "Collaborate"}</p>
+      <h1>{locale === "zh" ? "先选你是哪一种。" : "Pick the door that is yours."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "我在找各行各业的合作伙伴，也在找能把事情做成的资本。"
+          : "I am looking for partners across industries, and for capital that wants work done."}
+      />
+      <div class="grid-3">
+        {doors.map((d) => (
+          <a class="card" href={localizeHref(d.href, locale)} style="text-decoration:none">
+            <p class="eyebrow">{d.kicker}</p>
+            <h2>{d.title}</h2>
+            <p class="muted">{d.body}</p>
+          </a>
+        ))}
+      </div>
+      <CtaRow
+        locale={locale}
+        primaryHref="/contact"
+        primary={`${locale === "zh" ? "微信" : "WeChat"} ${contact.wechat}`}
+        secondaryHref={contact.telephoneHref}
+        secondary={contact.telephone}
+      />
+    </div>
+  </section>
+</Base>

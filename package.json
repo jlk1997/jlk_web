@@ -1,0 +1,20 @@
+{
+  "name": "jlk",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev:me": "pnpm --filter @jlk/me dev",
+    "dev:yisuan": "pnpm --filter @jlk/yisuan dev",
+    "build": "pnpm --filter @jlk/me build && pnpm --filter @jlk/yisuan build",
+    "build:me": "pnpm --filter @jlk/me build",
+    "build:yisuan": "pnpm --filter @jlk/yisuan build",
+    "preview:me": "pnpm --filter @jlk/me preview",
+    "preview:yisuan": "pnpm --filter @jlk/yisuan preview"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  }
+}

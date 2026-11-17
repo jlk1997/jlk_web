@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import type { Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/ai-agent" : "/en/ai-agent";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠与 AI Agent" : "Jiang Likai on AI agents"}
+  description={locale === "zh"
+    ? "Agent 得能办事，卡住了也能停下来。"
+    : "An agent has to get work done, and it has to be able to stop."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: "AI Agent", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow prose">
+      <p class="eyebrow">AI Agent</p>
+      <h1>{locale === "zh" ? "能办事，也能停下来。" : "It must work, and it must stop."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "Agent 得有目标，会用工具，卡住了能停下来让人看一眼，做完留得下记录。"
+          : "An agent needs a goal, tools, a place to stop for a person, and a record when it’s done."}
+      />
+      {
+        locale === "zh" ? (
+          <>
+            <p>企业里最常见的误会，是把对话框当成已经上线的员工。对话框产生文本。Agent 还要改状态：发内容、建工单、查链接、记台账。改状态就会出错。所以边界要先写下来。</p>
+            <p>适合交给 Agent 的，是重复、可检查、失败代价低的环节。不适合的，是没有权限表、没有回放、没有人签字的生产操作。我接项目时按这个拒。</p>
+            <p>小源的聊天分身是一个窄例子：它只接对话，并留下一份数字身份。窄，仍然有用。</p>
+            <p>更长的论证在文章《AI Agent 在企业里的真实边界》。</p>
+          </>
+        ) : (
+          <>
+            <p>The common enterprise mistake is treating a chat box as a hired employee. A chat box produces text. An agent also changes state: publishing, tickets, link checks, ledgers. Changing state means errors. Write the boundary first.</p>
+            <p>Good work for an agent is repetitive, inspectable, and cheap to get wrong. Bad work is production with no permission table, no replay, and no human signature. That is how I decline projects.</p>
+            <p>Xiaoyuan’s chat stand-in is a narrow example: it only takes the conversation, and keeps a digital identity. Narrow can still be useful.</p>
+            <p>The longer argument is in the essay on the real boundary of agents in companies.</p>
+          </>
+        )
+      }
+      <CtaRow
+        locale={locale}
+        primaryHref="/writing"
+        primary={locale === "zh" ? "读长文" : "Read the essay"}
+        secondaryHref="/collaborate"
+        secondary={locale === "zh" ? "谈一个具体场景" : "Bring a concrete scene"}
+      />
+    </div>
+  </section>
+</Base>

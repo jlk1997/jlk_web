@@ -1,0 +1,14 @@
+---
+interface Props {
+  locale?: "zh" | "en";
+  answer: string;
+  checked?: string;
+}
+
+const { answer, checked } = Astro.props;
+---
+
+<div>
+  <p class="lead">{answer}</p>
+  {checked && <p class="muted">{checked}</p>}
+</div>

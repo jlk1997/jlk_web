@@ -1,0 +1,28 @@
+---
+import { display, type Locale } from "../data/facts";
+
+interface Props {
+  locale: Locale;
+  rows: Array<{ label: string; value: string | null | { zh: string; en: string } }>;
+}
+
+const { locale, rows } = Astro.props;
+const visible = rows.filter((row) => row.value !== null && row.value !== undefined && row.value !== "");
+---
+
+{
+  visible.length > 0 && (
+    <table class="fact-table">
+      <tbody>
+        {
+          visible.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              <td>{display(row.value, locale)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  )
+}

@@ -1,0 +1,57 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import type { Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/life" : "/en/life";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠的生活：健身与宠物" : "Jiang Likai on training and pets"}
+  description={locale === "zh" ? "喜欢运动健身，喜欢宠物，随性但认真。" : "Training, pets, casual but serious."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "生活" : "Life", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow prose">
+      <p class="eyebrow">{locale === "zh" ? "生活" : "Life"}</p>
+      <h1>{locale === "zh" ? "随性，但认真。" : "Casual, but serious."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "健身，养宠物，是我自己还愿意花时间的事。"
+          : "Training and pets are where my time still goes."}
+      />
+      {
+        locale === "zh" ? (
+          <>
+            <p>主页如果只写公司和论文，人就没了。所以单独留了这一页。</p>
+            <p>我健身，也喜欢宠物。做宠物数字化，是因为真在这个行业里做过。</p>
+            <p>做人随性，交活认真。一起做事时两边都会见到。</p>
+          </>
+        ) : (
+          <>
+            <p>If a homepage only lists companies and papers, the person disappears. That is why this page exists.</p>
+            <p>I train, and I like pets. The pet work came from actually being in that industry.</p>
+            <p>Casual in person, serious about delivery. Both show up when we work together.</p>
+          </>
+        )
+      }
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "城市" : "City", value: locale === "zh" ? "上海" : "Shanghai" },
+        ]}
+      />
+    </div>
+  </section>
+</Base>

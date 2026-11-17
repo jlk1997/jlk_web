@@ -1,0 +1,11 @@
+---
+import { goLinks } from "@jlk/core/data/go";
+import Go from "../../views/Go.astro";
+
+export function getStaticPaths() {
+  return goLinks.map((link) => ({ params: { slug: link.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+<Go locale="zh" slug={slug!} />

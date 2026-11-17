@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import CtaRow from "@jlk/core/components/CtaRow.astro";
+import { organizations, person, SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const org = organizations.yisuan;
+const path = locale === "zh" ? "/ventures/yisuan" : "/en/ventures/yisuan";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={org.legalName[locale]}
+  description={org.description[locale]}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "创业" : "Ventures", path: locale === "zh" ? "/ventures" : "/en/ventures" },
+    { name: org.shortName[locale], path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{org.shortName[locale]}</p>
+      <h1>{org.shortName[locale]}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "蚁算做小程序电商：现成商城按年用，品牌要单独做的就深度定制，店里可以加 AI 导购。也做 App、网站和 GEO。创始人是江李铠，后端是何前亮。"
+          : "Yisuan makes mini-program shops: a ready shop by the year, a custom mini program for one brand, and an AI guide in the shop. Apps, websites, and GEO too. Founder: Likai Jiang. Backend: Qianliang He."}
+      />
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "名称" : "Name", value: org.legalName },
+          { label: locale === "zh" ? "官网" : "Site", value: SITES.yisuan.origin },
+          { label: locale === "zh" ? "创始人" : "Founder", value: person.name },
+          { label: locale === "zh" ? "城市" : "City", value: org.city },
+          { label: locale === "zh" ? "成立" : "Founded", value: org.founded },
+        ]}
+      />
+      <CtaRow
+        locale={locale}
+        primaryHref={SITES.yisuan.origin}
+        primary={locale === "zh" ? "打开蚁算官网" : "Open Yisuan"}
+        secondaryHref={`${SITES.yisuan.origin}/team`}
+        secondary={locale === "zh" ? "看团队" : "The team"}
+      />
+    </div>
+  </section>
+</Base>

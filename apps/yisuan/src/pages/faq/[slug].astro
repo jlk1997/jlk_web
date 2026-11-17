@@ -1,0 +1,11 @@
+---
+import { yisuanFaqItems } from "@jlk/core/data/ask";
+import FaqEntry from "../../views/FaqEntry.astro";
+
+export function getStaticPaths() {
+  return yisuanFaqItems().map((item) => ({ params: { slug: item.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+<FaqEntry locale="zh" slug={slug!} />

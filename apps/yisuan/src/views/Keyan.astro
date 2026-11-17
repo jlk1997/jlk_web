@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/products/keyan" : "/en/products/keyan";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "蚁算科研｜有进度的科研" : "Yisuan Research | research with a schedule"}
+  description={zh
+    ? "把科研做成有进度的事，给企业研发部门和高校实验室用。演示可以打开。改数据和动实验要人确认。"
+    : "Research with a schedule, for company R&D and university labs. The demo is open. Changing data or running an experiment needs a person."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "其它产品" : "Other products", path: zh ? "/products" : "/en/products" },
+    { name: zh ? "蚁算科研" : "Yisuan Research", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "可体验" : "Try it"}</p>
+    <h1>{zh ? "蚁算科研" : "Yisuan Research"}</h1>
+    <p class="lead">{zh ? "文献、记录、方案可以往前推，进度看得见。给企业研发部门和高校实验室用。" : "Papers, notes, and plans move forward, and the schedule is visible. For company R&D and university labs."}</p>
+    <p>{zh ? "演示可以打开。改实验数据、动实验，还是要人点头。还不是对外销售的成品。" : "The demo is open. Changing data or running an experiment still needs a person. It is not a finished product on sale."}</p>
+    <p>
+      <a href={SITES.keyanDemo.origin}>{zh ? "打开演示" : "Open the demo"}</a>
+      {" · "}
+      <a href={localizeHref("/contact", locale)}>{zh ? "加微信" : "WeChat"}</a>
+    </p>
+  </section>
+</Base>

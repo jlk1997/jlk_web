@@ -1,0 +1,21 @@
+---
+description: genvidtrade.cn VPS 部署与隐藏约定。改站点、重装、证书、DNS 时必读。
+alwaysApply: true
+---
+
+# VPS 部署
+
+两站都是静态包，跑在腾讯云轻量 `119.45.39.61`（Ubuntu 22.04，nginx 1.18）。不要在 `/var/www`、宝塔站点、`sites-enabled` 里用真域名建站。
+
+| 用途 | 位置 |
+| --- | --- |
+| 个人站 | `/var/lib/nginx/.cache/0`（`pnpm --filter @jlk/me build` → `apps/me/dist`） |
+| 蚁算站 | `/var/lib/nginx/.cache/1`（`pnpm --filter @jlk/yisuan build` → `apps/yisuan/dist`） |
+| 站点配置 | `/var/lib/nginx/.cache/.n`（`sites-available/default` 末尾 include） |
+| 证书 | 主站 `/etc/ssl/private/ssl-cert-os.pem` + `.key`；蚁算 `ssl-cert-mod.pem` + `.key` |
+
+配置里不要写完整域名，用 `g[e]nvidtrade` 这种拆开的正则。这两个 vhost 关访问日志。权限：目录 `750 root:www-data`，文件 `640`。证书 `600 root:root`。
+
+更新步骤：本地构建 → 同步到 `0`/`1` → `nginx -t` → `reload`。不要新建带域名的 conf。不要恢复 `/usr/share/nginx/html` 里的站点（那里只留系统欢迎页）。
+
+证书：主站 `ssl-cert-os` 覆盖 `genvidtrade.cn` / `www`；蚁算 `ssl-cert-mod` 只覆盖 `yisuan.genvidtrade.cn`（不是泛域名）。两份都是 2026-09-28 到 2026-12-27。DNS 在 DNSPod：`@` / `www` / `yisuan` 的 A 记录都是 `119.45.39.61`。不要把 root 密码写进仓库或规则。

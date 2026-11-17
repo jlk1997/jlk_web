@@ -1,0 +1,61 @@
+---
+import Base from "../layouts/Base.astro";
+import { deliverySteps, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/custom" : "/en/custom";
+const fits = zh
+  ? ["会员、积分、门店自提，要按品牌自己的规则来。", "预约量尺、报价单、经销商分档，现成商城装不下。", "要对接仓库、财务或已经在用的系统。", "页面必须是这个品牌的样子，不能像别人的店。"]
+  : ["Members, points, and store pickup have to follow this brand’s rules.", "A measuring visit, a quote, or dealer price bands will not fit a ready shop.", "A warehouse, accounts, or a system you already use has to connect.", "The screens have to look like this brand, not like someone else’s shop."];
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "高端定制小程序｜单独设计，代码归你" : "Custom mini program | designed apart, code yours"}
+  description={zh
+    ? "品牌要独一份的小程序，从界面到功能单独设计、单独开发。深度定制。代码和数据归你。按项目报价，聊完给书面数字。"
+    : "A mini program for one brand. Screens and functions designed and built apart. The code and the data are yours. Quoted as a project, in writing, after we talk."}
+  service={{
+    name: zh ? "高端定制小程序" : "Custom mini program",
+    description: zh ? "按品牌单独设计、单独开发的微信小程序，代码和数据归客户。" : "A WeChat mini program designed and built for one brand. The code and the data belong to the client.",
+  }}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "服务" : "Services", path: zh ? "/services" : "/en/services" },
+    { name: zh ? "定制" : "Custom", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "高端定制" : "Custom"}</p>
+    <h1>{zh ? "深度定制小程序。" : "A mini program, made for one brand."}</h1>
+    <p class="lead">{zh ? "现成商城解决「先开起来」。品牌要自己的页面、自己的流程，就从界面画到功能，单独开发。做完，代码和数据归你。" : "A ready shop gets you open. When the brand wants its own screens and its own flow, we draw the interface and build the functions apart. When it is done, the code and the data are yours."}</p>
+  </section>
+  <section class="band" style="padding-top:0" data-hot>
+    <h2>{zh ? "适合单独做的" : "A fit for custom"}</h2>
+    <ul class="list">{fits.map((item) => <li>{item}</li>)}</ul>
+    <div class="steps" style="margin-top:2.4rem">
+      {
+        deliverySteps.map((step, index) => (
+          <article>
+            <b>0{index + 1}</b>
+            <h3>{step.title[locale]}</h3>
+            <p class="muted">{step.owner[locale]}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p style="margin-top:1.4rem">
+      <a href={localizeHref("/contact", locale)}>{zh ? "加微信，说你卖什么" : "WeChat, and say what you sell"}</a>
+      {" · "}
+      <a href={localizeHref("/ecommerce", locale)}>{zh ? "只做电商小程序，看按年的商城" : "Just an ecommerce mini program: the yearly one"}</a>
+    </p>
+  </section>
+</Base>

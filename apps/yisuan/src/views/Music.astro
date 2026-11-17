@@ -1,0 +1,46 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/music" : "/en/music";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-24"
+  title={zh ? "比特音｜写一首歌，再发出去" : "比特音 | write a song, then send it"}
+  description={zh
+    ? "比特音可以写一首歌，再发到各音乐平台的创作者后台。歌做好之后能写进一段听不见的身份。生成模型正在更换，现在不能生成。这件事在创始人江李铠这边。"
+    : "比特音 writes a song, then sends it to creator dashboards. A finished track can carry an identity you do not hear. The generator is being replaced, so generation is off. This sits with the founder, Likai Jiang."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: "比特音", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "比特音" : "比特音"}</p>
+    <h1>{zh ? "写一首歌，再发出去。" : "Write a song, then send it."}</h1>
+    <p class="lead">{zh ? "这件事在创始人江李铠这边，和他的音乐水印研究是一条线。" : "This sits with the founder, Likai Jiang, on the same line as his work on music watermarks."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <h2>{zh ? "现在能做" : "What works now"}</h2>
+    <p>{zh ? "写一首歌，发到各音乐平台的创作者后台。歌做好之后，可以写进一段听不见的身份，整首能查。要发出去的短片段，从还没写过身份的原件截出来再写。" : "Write a song, then send it to the creator dashboards of music platforms. After a track is finished, an identity can be written in that you do not hear, and a whole track can be checked. A short clip that will be sent out is cut from the unmarked original, then marked."}</p>
+    <h2>{zh ? "现在不能" : "What is off"}</h2>
+    <p>{zh ? "生成模型正在更换，暂时不能生成。站点还在：" : "The generator is being replaced, so generation is off for now. The site is still up: "} <a href={SITES.biteyin.origin}>{SITES.biteyin.host}</a></p>
+    <h2>{zh ? "还在做" : "Still being built"}</h2>
+    <p>{zh ? "生成过程中写入，以及从成片里任意切几秒再认，还没有做成。" : "Writing the identity while the music is generated, and identifying an arbitrary few seconds cut from the finished file, are not done yet."}</p>
+    <p>
+      <a href={localizeHref("/team", locale)}>{zh ? "看江李铠" : "Likai Jiang"}</a>
+      {" · "}
+      <a href={localizeHref("/about#lab", locale)}>{zh ? "研究写在关于页" : "The research note"}</a>
+    </p>
+  </section>
+</Base>

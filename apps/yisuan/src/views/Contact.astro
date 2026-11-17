@@ -1,0 +1,41 @@
+---
+import Base from "../layouts/Base.astro";
+import { contact, organizations, SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/contact" : "/en/contact";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="ContactPage"
+  dateModified="2026-10-22"
+  title={zh ? "联系蚁算智能" : "Contact Yisuan"}
+  description={`${zh ? "微信" : "WeChat"} ${contact.wechat} · ${contact.telephone}`}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "联系" : "Contact", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "联系" : "Contact"}</p>
+    <h1>{zh ? "先说你卖什么。" : "Start with what you sell."}</h1>
+    <p class="lead">{zh ? "微信说品类、卖给谁、想先做电商小程序还是单独定制。我们回一份书面报价。" : "On WeChat: the trade, who buys, and whether you want an ecommerce mini program or a custom build. We answer with a written quote."}</p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <ul class="names">
+      <li><a href={contact.telephoneHref}>{zh ? "电话" : "Phone"} <em>{contact.telephone}</em></a></li>
+      <li><a>{zh ? "微信" : "WeChat"} <em>{contact.wechat}</em></a></li>
+      {contact.email && <li><a href={`mailto:${contact.email}`}>{zh ? "邮箱" : "Email"} <em>{contact.email}</em></a></li>}
+      <li><a>{zh ? "城市" : "City"} <em>{contact.city[locale]}</em></a></li>
+      <li><a>{zh ? "公司" : "Company"} <em>{organizations.yisuan.legalName[locale]}</em></a></li>
+    </ul>
+    <p style="margin-top:1.2rem"><a href={SITES.me.origin}>{zh ? "创始人江李铠" : "Founder Likai Jiang"}</a></p>
+  </section>
+</Base>

@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/products/teacher" : "/en/products/teacher";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-10-22"
+  title={zh ? "蚁算老师｜一篇论文，讲成一节课" : "Yisuan Teacher | a paper, taught as a class"}
+  description={zh
+    ? "给它一篇论文或一个知识点，它讲成一节有互动、有实验的课。演示可以打开。还没有学校把它当正式系统。"
+    : "Give it a paper or a concept and it teaches a class with interaction and a lab. The demo is open. No school is running it as the real system."}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "其它产品" : "Other products", path: zh ? "/products" : "/en/products" },
+    { name: zh ? "蚁算老师" : "Yisuan Teacher", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "可体验" : "Try it"}</p>
+    <h1>{zh ? "蚁算老师" : "Yisuan Teacher"}</h1>
+    <p class="lead">{zh ? "给它一篇论文，或者一个知识点。它讲成一节课：有互动，也有实验。" : "Give it a paper, or one concept. It turns that into a class, with interaction and a lab."}</p>
+    <p>{zh ? "演示可以打开。还不是学校里正在用的系统。下一步是和学习机接在一起。" : "The demo is open. It is not a system a school is running. Next is a learning device."}</p>
+    <p>
+      <a href={SITES.teacherDemo.origin}>{zh ? "打开演示" : "Open the demo"}</a>
+      {" · "}
+      <a href={localizeHref("/contact", locale)}>{zh ? "加微信" : "WeChat"}</a>
+    </p>
+  </section>
+</Base>

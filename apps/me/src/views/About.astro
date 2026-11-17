@@ -1,0 +1,96 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { person, timeline, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/about" : "/en/about";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="AboutPage"
+  title={locale === "zh" ? "关于江李铠｜上海理工大学在读博士" : "About Likai Jiang | PhD student at USST"}
+  description={person.description[locale]}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "关于" : "About", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <p class="eyebrow">{locale === "zh" ? "关于" : "About"}</p>
+      <h1>{locale === "zh" ? "江李铠。" : "Likai Jiang."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "上海人，上海理工大学在读博士。画画出身。公司是蚁算，也开了微宠时光。"
+          : "From Shanghai. PhD student at USST. Art first. I run Yisuan, and also Weichong."}
+      />
+      <div class="portrait-row">
+        <figure class="portrait">
+          <img src={person.image ?? ""} alt={locale === "zh" ? "江李铠" : "Likai Jiang"} width="799" height="1024" />
+          <figcaption>{locale === "zh" ? "江李铠，上海。" : "Likai Jiang, Shanghai."}</figcaption>
+        </figure>
+        <figure class="portrait">
+          <img src={person.imageAcademic ?? ""} alt={locale === "zh" ? "江李铠" : "Likai Jiang"} width="768" height="1024" />
+          <figcaption>{locale === "zh" ? "同一人。论文署名也写 Jiang Likai。" : "Same person. Papers also use Jiang Likai."}</figcaption>
+        </figure>
+      </div>
+      <div class="prose">
+        {
+          locale === "zh" ? (
+            <>
+              <p>我在上海长大，现在也在上海。博士还没读完，学校是上海理工大学，实验室是 MICS。现在做的是 AI 安全，以及音乐生成模型的水印。硕士阶段的论文在 <a href={localizeHref("/research", locale)}>这里</a>。</p>
+              <p>更早是美术生，十几岁画少年漫画。后来做过 UI、产品经理、前端和 Unity。所以一个东西从画面到代码，我习惯自己走一遍。</p>
+              <p>公司是蚁算，给中小企业做智能体、小程序、App 和网站。微宠时光做宠物，是另一家。中间做过电商，做成的、没做成的都有。</p>
+              <p>平时健身，也喜欢宠物。想认识各行各业的人，投资的事先把话谈清楚。要找我，走合作页就行。</p>
+            </>
+          ) : (
+            <>
+              <p>I grew up in Shanghai and still work here. The PhD is underway at USST, in the MICS Lab, on AI security and watermarks for music models. The master’s papers are <a href={localizeHref("/research", locale)}>here</a>.</p>
+              <p>Before that I was an art student, drawing comics as a teenager. Then UI, product, front-end, and Unity. I got used to taking a thing from the picture through to the code.</p>
+              <p>Yisuan builds agents, mini programs, apps, and websites for smaller companies. Weichong is the pet studio, a separate company. Ecommerce sat in between — some of it shipped, some didn’t.</p>
+              <p>I train, I like pets. I want to meet people across industries, and I want a real conversation if you are investing. Use the collaborate page.</p>
+            </>
+          )
+        }
+      </div>
+      <h2>{locale === "zh" ? "关键事实" : "Facts"}</h2>
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "姓名" : "Name", value: person.name },
+          { label: locale === "zh" ? "英文名" : "English name", value: person.latinName },
+          { label: locale === "zh" ? "论文署名" : "Paper name", value: "Jiang Likai / Jiang LiKai" },
+          { label: locale === "zh" ? "城市" : "City", value: person.city },
+          { label: locale === "zh" ? "头衔" : "Title", value: person.jobTitle },
+          { label: locale === "zh" ? "电话" : "Phone", value: person.telephone },
+          { label: locale === "zh" ? "微信" : "WeChat", value: person.wechat },
+          { label: locale === "zh" ? "邮箱" : "Email", value: person.email },
+          { label: locale === "zh" ? "院校" : "School", value: person.school },
+          { label: locale === "zh" ? "研究方向" : "Research", value: person.researchField },
+          { label: locale === "zh" ? "实验室" : "Lab", value: person.lab },
+        ]}
+      />
+      <h2>{locale === "zh" ? "时间线" : "Timeline"}</h2>
+      <ol style="list-style:none;padding:0;margin:0">
+        {timeline.map((item) => (
+          <li class="card" style="margin-bottom:0.8rem">
+            <p class="eyebrow">{item.period[locale]}</p>
+            <h3>
+              {item.href ? <a href={localizeHref(item.href, locale)}>{item.title[locale]}</a> : item.title[locale]}
+            </h3>
+            <p class="muted">{item.body[locale]}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>

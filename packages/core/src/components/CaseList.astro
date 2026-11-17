@@ -1,0 +1,39 @@
+---
+import { cases, type Locale } from "../data/facts";
+import { localizeHref } from "../data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ul class="case-list">
+  {
+    cases.map((item) => {
+      const inner = (
+        <>
+          <b>{item.name[locale]}</b>
+          <span class="muted">{item.note[locale]}</span>
+        </>
+      );
+      return (
+        <li>
+          {item.href ? (
+            <a
+              class="case-row"
+              href={item.href.startsWith("http") ? item.href : localizeHref(item.href, locale)}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") ? "noopener" : undefined}
+            >
+              {inner}
+            </a>
+          ) : (
+            <div class="case-row">{inner}</div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

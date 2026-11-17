@@ -1,0 +1,61 @@
+---
+import Base from "../layouts/Base.astro";
+import Lineup from "@jlk/core/components/Lineup.astro";
+import { organizations, SITES, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/ventures" : "/en/ventures";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  title={locale === "zh" ? "江李铠的创业经历" : "Ventures by Jiang Likai"}
+  description={locale === "zh"
+    ? "蚁算智能和微宠时光。蚁算给中小企业做智能体、小程序、App 和网站，也在做自己的产品。"
+    : "Yisuan and Weichong Time. Yisuan builds agents, mini programs, apps, and websites for smaller companies, and is building its own products."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "创业" : "Ventures", path },
+  ]}
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">{locale === "zh" ? "创业" : "Ventures"}</p>
+      <h1>{locale === "zh" ? "两家公司。" : "Two companies."}</h1>
+      <p class="lead">
+        {locale === "zh"
+          ? "能点名的是蚁算智能和微宠时光。蚁算现在的业务在下面，点进去到公司站。"
+          : "The named companies are Yisuan and Weichong Time. Yisuan’s current lines are below and open on the company site."}
+      </p>
+      <div class="grid-2">
+        <a class="card" href={localizeHref("/ventures/yisuan", locale)} style="text-decoration:none">
+          <p class="eyebrow">{organizations.yisuan.shortName[locale]}</p>
+          <h2>{organizations.yisuan.legalName[locale]}</h2>
+          <p class="muted">{organizations.yisuan.description[locale]}</p>
+        </a>
+        <a class="card" href={localizeHref("/ventures/weichong", locale)} style="text-decoration:none">
+          <p class="eyebrow">{organizations.weichong.shortName[locale]}</p>
+          <h2>{organizations.weichong.legalName[locale]}</h2>
+          <p class="muted">{organizations.weichong.description[locale]}</p>
+        </a>
+        <article class="card">
+          <p class="eyebrow">{locale === "zh" ? "此前" : "Earlier"}</p>
+          <h2>{locale === "zh" ? "电商和服务" : "Ecommerce and products"}</h2>
+          <p class="muted">{locale === "zh" ? "中间做过电商服务，也试过别的产品。做成的、没做成的都有。" : "Ecommerce service work, and other products. Some shipped. Some didn’t."}</p>
+        </article>
+      </div>
+      <div style="margin-top:2.5rem">
+        <Lineup locale={locale} host="me" />
+      </div>
+      <p class="muted" style="margin-top:1.5rem">
+        {locale === "zh" ? "公司官网：" : "Company site: "}
+        <a href={SITES.yisuan.origin}>{SITES.yisuan.host}</a>
+      </p>
+    </div>
+  </section>
+</Base>

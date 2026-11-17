@@ -1,0 +1,88 @@
+---
+import Base from "../layouts/Base.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import { incubating, organizations, partners, person, researchTracks, SITES, team, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const path = zh ? "/about" : "/en/about";
+const org = organizations.yisuan;
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="AboutPage"
+  dateModified="2026-10-22"
+  title={zh ? "关于蚁算智能" : "About Yisuan"}
+  description={org.description[locale]}
+  breadcrumbs={[
+    { name: zh ? "首页" : "Home", path: zh ? "/" : "/en" },
+    { name: zh ? "关于" : "About", path },
+  ]}
+>
+  <section class="intro">
+    <p class="bracket">{zh ? "关于" : "About"}</p>
+    <h1>{zh ? "蚁算智能" : "Yisuan"}</h1>
+    <p class="lead">{org.description[locale]}</p>
+    <p class="prose" style="margin-top:1rem">
+      {zh
+        ? "名字里的「蚁」是做事的方式：一步一步，把活做完。算是把模型用在具体的买卖上。"
+        : "The ant in the name is the way of working: one step, then the next, until the job is done. The counting is a model on a real sale."}
+    </p>
+  </section>
+  <section class="band" style="padding-top:0">
+    <FactTable
+      locale={locale}
+      rows={[
+        { label: zh ? "名称" : "Name", value: org.legalName },
+        { label: zh ? "成立" : "Founded", value: org.founded },
+        { label: zh ? "城市" : "City", value: org.city },
+        { label: zh ? "地址" : "Address", value: org.registeredAddress },
+        { label: zh ? "创始人" : "Founder", value: person.name },
+        { label: zh ? "成员" : "People", value: team.map((member) => member.name[locale]).join(zh ? "、" : ", ") },
+      ]}
+    />
+    <p style="margin-top:1rem">
+      {zh ? "不是小蚁科技，也不是芯片公司「奕算」。说明在 " : "Not Xiaoyi, and not the chip firm with a similar name. The note is "}
+      <a href={localizeHref("/not-xiaoyi", locale)}>{zh ? "这一页" : "here"}</a>
+      {zh ? "。创始人站点：" : ". Founder: "}
+      <a href={SITES.me.origin}>{person.name[locale]}</a>
+    </p>
+  </section>
+  <section class="band" style="padding-top:0" data-hot>
+    <h2>{zh ? "做你这家店的人" : "The people on your shop"}</h2>
+    <p class="muted">{zh ? "江李铠管需求和产品。李嘉树、王浩然做小程序和网站。何前亮管上线和服务器。刘小斌对接商家，把做法讲清楚。" : "Likai Jiang takes the brief and the product. Li Jiashu and Wang Haoran build the mini program and the site. Qianliang He takes launch and the server. Liu Xiaobin talks with the shop, in plain words."}</p>
+    <p style="margin-top:1rem"><a href={localizeHref("/team", locale)}>{zh ? "团队页" : "Team page"}</a></p>
+    {
+      partners.map((item) => (
+        <p>
+          <b>{item.url ? <a href={item.url}>{item.name[locale]}</a> : item.name[locale]}</b>
+          <span class="muted"> — {item.note[locale]}</span>
+        </p>
+      ))
+    }
+  </section>
+  <section class="band" id="lab" style="padding-top:0">
+    <h2>{zh ? "还在研究" : "Still in research"}</h2>
+    <p class="muted">{zh ? "下面两件还没做成。再往下的项目，也还没对外卖。" : "The next two are not done. The ones after that are not for sale."}</p>
+    <div class="grid-2" style="margin-top:1rem">
+      {
+        researchTracks.map((item) => (
+          <article class="card">
+            <h3>{item.title[locale]}</h3>
+            <p class="muted">{item.body[locale]}</p>
+          </article>
+        ))
+      }
+    </div>
+    <ul class="list">
+      {incubating.map((item) => <li><b>{item.name[locale]}</b> — <span class="muted">{item.note[locale]}</span></li>)}
+    </ul>
+  </section>
+</Base>

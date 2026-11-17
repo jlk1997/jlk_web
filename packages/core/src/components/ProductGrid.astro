@@ -1,0 +1,35 @@
+---
+import { offerings, SITES, type Locale, type OfferingGroup } from "../data/facts";
+import { localizeHref } from "../data/nav";
+
+interface Props {
+  locale: Locale;
+  host?: "yisuan" | "me";
+  group?: OfferingGroup;
+}
+
+const { locale, host = "yisuan", group = "product" } = Astro.props;
+
+function hrefFor(href: string): string {
+  if (href.startsWith("http")) return href;
+  const local = localizeHref(href, locale);
+  if (host === "me") return `${SITES.yisuan.origin}${local}`;
+  return local;
+}
+---
+
+<div class="product-grid">
+  {
+    offerings
+      .filter((item) => item.group === group)
+      .map((item) => (
+        <a class="card product-card" href={hrefFor(item.detailHref)}>
+          <p class="spec">
+            {item.host[locale]} · {item.statusLabel[locale]} · {item.audience[locale]}
+          </p>
+          <h3>{item.name[locale]}</h3>
+          <p class="muted" style="margin:0">{item.summary[locale]}</p>
+        </a>
+      ))
+  }
+</div>

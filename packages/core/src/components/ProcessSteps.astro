@@ -1,0 +1,31 @@
+---
+import { deliverySteps, deliverables, type Locale } from "../data/facts";
+
+interface Props {
+  locale: Locale;
+  showDeliverables?: boolean;
+}
+
+const { locale, showDeliverables = true } = Astro.props;
+---
+
+{
+  showDeliverables && (
+    <ul class="deliver">
+      {deliverables.map((item) => (
+        <li>{item[locale]}</li>
+      ))}
+    </ul>
+  )
+}
+<ol class="steps">
+  {
+    deliverySteps.map((step, index) => (
+      <li class="step">
+        <span class="step-no">{String(index + 1).padStart(2, "0")}</span>
+        <b>{step.title[locale]}</b>
+        <span class="owner">{step.owner[locale]}</span>
+      </li>
+    ))
+  }
+</ol>

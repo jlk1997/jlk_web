@@ -1,0 +1,42 @@
+---
+import { contact, organizations, type Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const zh = locale === "zh";
+const org = organizations.yisuan;
+---
+
+<div class="drawer" data-drawer data-hot>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>contact · yisuan · <b>微信 {contact.wechat}</b> · </span>
+      <span>contact · yisuan · <b>微信 {contact.wechat}</b> · </span>
+    </div>
+  </div>
+  <div class="drawer-grid">
+    <div>
+      <p class="bracket">{zh ? "先说你卖什么" : "Start with what you sell"}</p>
+      <h2>{zh ? "聊完给书面报价。" : "A written quote after we talk."}</h2>
+      <p class="lead">{zh ? "现成商城按年付。单独做的按项目报。数字不写在网上。" : "A ready shop is paid by the year. A custom build is quoted as a project. The number is not on the site."}</p>
+      <p style="margin-top:1rem"><a href={localizeHref("/contact", locale)}>{zh ? "打开联系页" : "Contact page"}</a></p>
+    </div>
+    <dl>
+      <dt>{zh ? "微信" : "WeChat"}</dt>
+      <dd>{contact.wechat}</dd>
+      <dt>{zh ? "电话" : "Phone"}</dt>
+      <dd><a href={contact.telephoneHref}>{contact.telephone}</a></dd>
+      <dt>{zh ? "邮箱" : "Email"}</dt>
+      <dd>{contact.email ? <a href={`mailto:${contact.email}`}>{contact.email}</a> : ""}</dd>
+      <dt>{zh ? "公司" : "Company"}</dt>
+      <dd>{org.legalName[locale]}</dd>
+      <dt>{zh ? "地址" : "Address"}</dt>
+      <dd>{org.registeredAddress?.[locale]}</dd>
+      <dt><button class="ghost" type="button" data-close-contact>{zh ? "收起" : "Close"}</button></dt>
+    </dl>
+  </div>
+</div>

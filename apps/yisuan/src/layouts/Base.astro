@@ -1,0 +1,67 @@
+---
+import "../styles/site.css";
+import Seo from "@jlk/core/seo/Seo.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ContactDrawer from "../components/ContactDrawer.astro";
+import type { Locale } from "@jlk/core/data/facts";
+import type { JsonLdPage } from "@jlk/core/seo/jsonld";
+
+interface Props {
+  locale: Locale;
+  path: string;
+  title: string;
+  description: string;
+  type?: JsonLdPage["type"];
+  datePublished?: string;
+  dateModified?: string;
+  breadcrumbs?: JsonLdPage["breadcrumbs"];
+  faq?: JsonLdPage["faq"];
+  service?: JsonLdPage["service"];
+}
+
+const { locale, path, title, description, ...seo } = Astro.props;
+const zh = locale === "zh";
+---
+
+<!doctype html>
+<html lang={zh ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo site="yisuan" locale={locale} path={path} title={title} description={description} {...seo} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      try {
+        var path = location.pathname.replace(/\/$/, "") || "/";
+        var home = path === "/" || path === "/en";
+        var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (home && !reduce && !sessionStorage.getItem("ys-seen")) document.documentElement.classList.add("booting");
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div class="loader" data-loader>
+      <p>{zh ? "蚁算智能 · 小程序电商" : "Yisuan · mini-program shops"}</p>
+      <div class="roll">
+        <div data-roll>
+          <span>{zh ? "小程序商城" : "A ready shop"}</span>
+          <span>{zh ? "AI 导购" : "An AI guide"}</span>
+          <span>{zh ? "品牌定制" : "Made for one brand"}</span>
+        </div>
+      </div>
+    </div>
+    <div class="curtain" data-curtain aria-hidden="true"><i></i><i></i></div>
+    <div class="cursor" data-cursor></div>
+    <Header locale={locale} path={path} />
+    <ContactDrawer locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <div class="name-float" data-name-float><img alt="" /></div>
+    <Footer locale={locale} />
+    <script>
+      import "../scripts/motion.ts";
+    </script>
+  </body>
+</html>

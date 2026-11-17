@@ -1,0 +1,23 @@
+---
+import { localizeHref } from "../data/nav";
+import type { Locale } from "../data/facts";
+
+interface Props {
+  locale: Locale;
+  primaryHref: string;
+  primary: string;
+  secondaryHref?: string;
+  secondary?: string;
+}
+
+const { locale, primaryHref, primary, secondaryHref, secondary } = Astro.props;
+---
+
+<p style="display:flex;flex-wrap:wrap;gap:0.7rem;margin:1.6rem 0 0">
+  <a class="btn btn-solid" href={localizeHref(primaryHref, locale)}>{primary}</a>
+  {secondary && secondaryHref && (
+    <a class="btn" href={secondaryHref.startsWith("http") || secondaryHref.startsWith("tel:") ? secondaryHref : localizeHref(secondaryHref, locale)}>
+      {secondary}
+    </a>
+  )}
+</p>

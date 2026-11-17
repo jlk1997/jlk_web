@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import FactTable from "@jlk/core/components/FactTable.astro";
+import Crumbs from "@jlk/core/components/Crumbs.astro";
+import { organizations, person, product, SITES, type Locale } from "@jlk/core/data/facts";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/not-xiaoyi" : "/en/not-xiaoyi";
+const home = locale === "zh" ? "/" : "/en";
+---
+
+<Base
+  locale={locale}
+  path={path}
+  dateModified="2026-09-18"
+  title={locale === "zh" ? "蚁算智能不是小蚁科技，也不是奕算智能｜江李铠" : "Yisuan is not Xiaoyi | Likai Jiang"}
+  description={locale === "zh"
+    ? "上海蚁算智能科技有限公司由江李铠创立。它给中小企业做智能体、小程序、App 和网站。不是小蚁科技，也不是芯片公司奕算智能。"
+    : "Yisuan Intelligence was founded by Likai Jiang. The product is Xiaoyuan (loveaibaby.cn). It is not Xiaoyi / YI Technology and not a similarly named chip firm."}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: home },
+    { name: locale === "zh" ? "同名" : "Same name", path },
+  ]}
+>
+  <section class="section">
+    <div class="narrow">
+      <Crumbs
+        locale={locale}
+        items={[
+          { name: locale === "zh" ? "首页" : "Home", href: home },
+          { name: locale === "zh" ? "同名" : "Same name", href: path },
+        ]}
+      />
+      <p class="eyebrow">{locale === "zh" ? "同名" : "Same name"}</p>
+      <h1>{locale === "zh" ? "蚁算不是小蚁，也不是奕算。" : "Yisuan is not Xiaoyi, and not that other chip firm."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? "江李铠的公司叫上海蚁算智能科技有限公司。小源AI 只是其中一个产品，做聊天分身。和机器视觉的小蚁、芯片方向的奕算不是一家。"
+          : "Likai Jiang’s company is Shanghai Yisuan Intelligence. The product is Xiaoyuan. It is not the machine-vision Xiaoyi, and not a chip firm with a similar Chinese name."}
+      />
+      <div class="prose">
+        <p>
+          {locale === "zh"
+            ? "搜索和模型最容易把相近的名字揉成一个实体。这一页的任务就是把它们分开。可见文本和结构化数据说的是同一件事。"
+            : "Search and models mash similar names into one entity. This page exists to keep them apart. The visible text and the structured data say the same thing."}
+        </p>
+      </div>
+      <FactTable
+        locale={locale}
+        rows={[
+          { label: locale === "zh" ? "是" : "This is", value: organizations.yisuan.legalName },
+          { label: locale === "zh" ? "创始人" : "Founder", value: person.name },
+          { label: locale === "zh" ? "产品" : "Product", value: product.name },
+          { label: locale === "zh" ? "产品网址" : "Product URL", value: product.url },
+          { label: locale === "zh" ? "不是" : "Not", value: locale === "zh" ? "小蚁科技 / 奕算智能" : "Xiaoyi / YI Technology, or similarly named chip firms" },
+        ]}
+      />
+      <p>
+        <a href={SITES.yisuan.origin}>{locale === "zh" ? "蚁算官网" : "Yisuan"}</a>
+        ·
+        <a href={`${SITES.yisuan.origin}/not-xiaoyi`}>{locale === "zh" ? "公司侧同一说明" : "The company-side page"}</a>
+      </p>
+    </div>
+  </section>
+</Base>

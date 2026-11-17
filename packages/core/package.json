@@ -1,0 +1,19 @@
+{
+  "name": "@jlk/core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens/tokens.css",
+    "./fonts.css": "./src/tokens/fonts.css",
+    "./og/render": "./src/og/render.ts",
+    "./*": "./src/*"
+  },
+  "dependencies": {
+    "@fontsource-variable/newsreader": "^5.2.8",
+    "@fontsource-variable/source-sans-3": "^5.2.8",
+    "@fontsource/ibm-plex-mono": "^5.2.6",
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

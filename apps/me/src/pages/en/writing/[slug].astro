@@ -1,0 +1,12 @@
+---
+import { getCollection } from "astro:content";
+import WritingEntry from "../../../views/WritingEntry.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  return posts.filter((p) => p.data.locale === "en").map((p) => ({ params: { slug: p.data.article } }));
+}
+
+const { slug } = Astro.params;
+---
+<WritingEntry locale="en" slug={slug!} />

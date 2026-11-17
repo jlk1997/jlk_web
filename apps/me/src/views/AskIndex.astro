@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+import AnswerBlock from "@jlk/core/components/AnswerBlock.astro";
+import { askCategories, askItems, type AskCategory } from "@jlk/core/data/ask";
+import type { Locale } from "@jlk/core/data/facts";
+import { localizeHref } from "@jlk/core/data/nav";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const path = locale === "zh" ? "/ask" : "/en/ask";
+const cats = Object.keys(askCategories) as AskCategory[];
+const faq = askItems.map((item) => ({ q: item.question[locale], a: item.answer[locale] }));
+---
+
+<Base
+  locale={locale}
+  path={path}
+  type="FAQPage"
+  title={locale === "zh" ? "关于江李铠的问答" : "Ask about Likai Jiang"}
+  description={locale === "zh" ? "常见问法的自包含答案。每条也可单独打开。" : "Self-contained answers. Each one also has its own URL."}
+  faq={faq}
+  breadcrumbs={[
+    { name: locale === "zh" ? "首页" : "Home", path: locale === "zh" ? "/" : "/en" },
+    { name: locale === "zh" ? "问答" : "Ask", path },
+  ]}
+>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">{locale === "zh" ? "问答" : "Ask"}</p>
+      <h1>{locale === "zh" ? "先把问法写全。" : "Write the questions down."}</h1>
+      <AnswerBlock
+        locale={locale}
+        answer={locale === "zh"
+          ? `这里有 ${askItems.length} 个真实问法。答案短，能单独被摘取。`
+          : `${askItems.length} real questions. Short answers, each extractable on its own.`}
+      />
+      <label class="muted" for="ask-filter">{locale === "zh" ? "筛选" : "Filter"}</label>
+      <input id="ask-filter" type="search" placeholder={locale === "zh" ? "搜问题" : "Search questions"} style="width:100%;margin:0.4rem 0 1.4rem;padding:0.7rem 0.9rem;border-radius:0.8rem;border:1px solid var(--line);background:var(--ink-soft);color:var(--paper)" />
+      {cats.map((cat) => (
+        <section style="margin-bottom:2.2rem">
+          <h2>{askCategories[cat][locale]}</h2>
+          <div class="grid-2">
+            {askItems.filter((item) => item.category === cat).map((item) => (
+              <article class="card ask-item" data-q={`${item.question.zh} ${item.question.en}`} id={item.slug}>
+                <h3><a href={localizeHref(`/ask/${item.slug}`, locale)}>{item.question[locale]}</a></h3>
+                <p class="muted">{item.answer[locale]}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+  <script>
+    const input = document.getElementById("ask-filter") as HTMLInputElement | null;
+    const items = document.querySelectorAll(".ask-item");
+    const apply = () => {
+      const q = (input?.value ?? "").toLowerCase();
+      items.forEach((el) => {
+        const hay = (el.getAttribute("data-q") ?? "").toLowerCase();
+        (el as HTMLElement).style.display = hay.includes(q) ? "" : "none";
+      });
+    };
+    const start = new URLSearchParams(location.search).get("q");
+    if (input && start) {
+      input.value = start;
+      apply();
+    }
+    input?.addEventListener("input", apply);
+  </script>
+</Base>
